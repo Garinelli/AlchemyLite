@@ -27,9 +27,9 @@ class ModelFactory:
 
 
         for field_name, field_type in self.fields.items():
-            column_type = self.TYPES.get(field_type)
+            column_type = self.TYPES.get(field_type['type'])
             if column_type:
-                attrs[field_name] = mapped_column(column_type)
+                attrs[field_name] = mapped_column(column_type, nullable=field_type['null'], default=field_type['default'])
             else:
                 raise ValueError(f"Тип {field_type} не поддерживается")
 

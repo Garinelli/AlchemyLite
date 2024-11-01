@@ -1,5 +1,5 @@
 from typing import Any, Dict, Type
-from sqlalchemy import Integer, String, Column
+from sqlalchemy import Integer, String, Boolean, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import mapped_column
 
@@ -9,13 +9,16 @@ class ModelFactory:
     TYPES = {
         int: Integer,
         str: String,
+        bool: Boolean,
+        float: Float,
     }
 
     def __init__(self, name: str, fields: Dict[str, Type[Any]]):
         self.name = name
         self.fields = fields
 
-    def create_model(self):
+    @property
+    def model(self):
 
         attrs = {
             '__tablename__': self.name,

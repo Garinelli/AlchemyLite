@@ -19,8 +19,9 @@ class BaseConfig(ABC):
     def DATABASE_URL(self) -> str:
         pass
 
+    @property
     @abstractmethod
-    def get_session(self):
+    def session(self):
         pass
 
 
@@ -29,7 +30,8 @@ class SyncConfig(BaseConfig):
     def DATABASE_URL(self) -> str:
         return f"postgresql+psycopg://{self.db_user}:{self.db_pass}@{self.db_host}:{self.db_port}/{self.db_name}"
 
-    def get_session(self) -> sessionmaker:
+    @property
+    def session(self) -> sessionmaker:
         sync_engine = create_engine(
             url=self.DATABASE_URL,
             echo=False
@@ -44,7 +46,8 @@ class AsyncConfig(BaseConfig):
     def DATABASE_URL(self) -> str:
         return f"postgresql+asyncpg://{self.db_user}:{self.db_pass}@{self.db_host}:{self.db_port}/{self.db_name}"
 
-    def get_session(self) -> async_sessionmaker:
+    @property
+    def session(self) -> async_sessionmaker:
         async_engine = create_async_engine(
             url=self.DATABASE_URL,
         )

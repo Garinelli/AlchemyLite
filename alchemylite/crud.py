@@ -18,9 +18,10 @@ class AbstractOperations(ABC):
 
 
 class SyncCrudOperation:
-    def __init__(self, session_factory: sessionmaker, model):
+    def __init__(self, session_factory: sessionmaker, model, base):
         self.session_factory = session_factory
         self.model = model
+        self.base = base
 
     def validate_params(self, params: dict[str, Any]) -> bool:
         model_columns = {column.name: column.type for column in inspect(self.model).columns}
@@ -68,4 +69,9 @@ class SyncCrudOperation:
             stmt = delete(self.model).where(self.model.id == id)
             session.execute(stmt)
             session.commit()
+
+    def create_all_tables(self) -> None:
+        """Create all tables in database."""
+        with self.session_factory() as session:
+            self.base.metadata.create_all(bind=session.get_bind())
 

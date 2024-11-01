@@ -34,8 +34,8 @@ class SyncConfig(BaseConfig):
             url=self.DATABASE_URL,
             echo=False
         )
-        session = sessionmaker(sync_engine)
-        return session
+        session_factory = sessionmaker(sync_engine)
+        return session_factory
 
 
 class AsyncConfig(BaseConfig):
@@ -48,5 +48,5 @@ class AsyncConfig(BaseConfig):
         async_engine = create_async_engine(
             url=self.DATABASE_URL,
         )
-        async_session = async_sessionmaker(async_engine)
-        return async_session
+        async_session_factory = async_sessionmaker(async_engine)
+        return async_session_factory

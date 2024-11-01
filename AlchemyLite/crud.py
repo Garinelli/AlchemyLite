@@ -11,6 +11,9 @@ class SyncCrudOperation:
         self.session_factory = session_factory
         self.model = model
 
+
+
+
     def validate_params(self, params: dict[str, Any]) -> bool:
         model_columns = {column.name: column.type for column in inspect(self.model).columns}
         for key, value in params.items():

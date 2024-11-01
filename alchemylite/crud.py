@@ -1,18 +1,26 @@
-from typing import Any
+from abc import ABC, abstractmethod
+from typing import Any, Union
+
 from sqlalchemy import select, update, delete
+from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.inspection import inspect
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import async_sessionmaker
-from .config import SyncConfig, AsyncConfig
+
+
+class AbstractOperations(ABC):
+    def __init__(self, session_factory: Union[sessionmaker, async_sessionmaker], model):
+        self.session_factory = session_factory
+        self.model = model
+
+    @abstractmethod
+    def validate_params(self, params: dict[str, Any]) -> bool:
+        pass
 
 
 class SyncCrudOperation:
     def __init__(self, session_factory: sessionmaker, model):
         self.session_factory = session_factory
         self.model = model
-
-
-
 
     def validate_params(self, params: dict[str, Any]) -> bool:
         model_columns = {column.name: column.type for column in inspect(self.model).columns}
@@ -60,3 +68,4 @@ class SyncCrudOperation:
             stmt = delete(self.model).where(self.model.id == id)
             session.execute(stmt)
             session.commit()
+

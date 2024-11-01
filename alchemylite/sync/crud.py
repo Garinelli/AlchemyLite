@@ -1,26 +1,15 @@
-from abc import ABC, abstractmethod
-from typing import Any, Union
+from typing import Any
 
 from sqlalchemy import select, update, delete
-from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.inspection import inspect
 from sqlalchemy.orm import sessionmaker
 
 
-class AbstractOperations(ABC):
-    def __init__(self, session_factory: Union[sessionmaker, async_sessionmaker], model):
-        self.session_factory = session_factory
-        self.model = model
-
-    @abstractmethod
-    def validate_params(self, params: dict[str, Any]) -> bool:
-        pass
-
-
 class SyncCrudOperation:
-    def __init__(self, session_factory: sessionmaker, model):
+    def __init__(self, session_factory: sessionmaker, model, base):
         self.session_factory = session_factory
         self.model = model
+        self.base = base
 
     def validate_params(self, params: dict[str, Any]) -> bool:
         model_columns = {column.name: column.type for column in inspect(self.model).columns}
@@ -41,8 +30,6 @@ class SyncCrudOperation:
             query = select(self.model)
             result = (session.execute(query)).all()
             return result
-            # model_columns = {column.name: column.type for column in inspect(self.model).columns}
-            # result_dict = {}
 
     def update_by_id(self, condition: dict[str, int], params: dict[str, int]) -> None:
         self.validate_params(params)
@@ -69,3 +56,12 @@ class SyncCrudOperation:
             session.execute(stmt)
             session.commit()
 
+    def create_all_tables(self) -> None:
+        """Create all tables in database."""
+        with self.session_factory() as session:
+            self.base.metadata.create_all(bind=session.get_bind())
+
+    def delete_all_tables(self) -> None:
+        """Delete all tables in database."""
+        with self.session_factory() as session:
+            self.base.metadata.drop_all(bind=session.get_bind())

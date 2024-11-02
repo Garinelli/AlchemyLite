@@ -24,12 +24,13 @@ class AsyncCrudOperation:
             session.add(model)
             await session.commit()
 
-    async def read(self) -> tuple:
+    async def read(self) -> list[dict]:
         async with self.async_session_factory() as session:
             query = select(self.model)
             result = await session.execute(query)
-            result = result.all()
-            return result
+            result = result.scalars().all()
+            return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
+                    row in result]
 
     async def update_by_id(self, condition: dict[str, int], params: dict[str, Any]) -> None:
         self.validate_params(params)

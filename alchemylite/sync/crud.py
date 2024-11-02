@@ -25,11 +25,12 @@ class SyncCrudOperation:
             session.add(model)
             session.commit()
 
-    def read(self) -> tuple:
+    def read(self) -> list[dict]:
         with self.session_factory() as session:
             query = select(self.model)
-            result = (session.execute(query)).all()
-            return result
+            result = session.execute(query).scalars().all()
+            return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
+                    row in result]
 
     def update_by_id(self, condition: dict[str, int], params: dict[str, int]) -> None:
         self.validate_params(params)

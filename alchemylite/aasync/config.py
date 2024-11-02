@@ -1,9 +1,16 @@
+"""
+Configuration for async session
+"""
+
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 from alchemylite import BaseConfig
 
 
 class AsyncConfig(BaseConfig):
+    """
+    Class for configuring async sessions
+    """
     @property
     def DATABASE_URL(self) -> str:
         return f"postgresql+asyncpg://{self.db_user}:{self.db_pass}@{self.db_host}:{self.db_port}/{self.db_name}"

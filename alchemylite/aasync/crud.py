@@ -1,3 +1,7 @@
+"""
+CRUD Operations for async session
+"""
+
 from typing import Any
 
 from sqlalchemy import select, update, delete
@@ -6,12 +10,20 @@ from sqlalchemy.inspection import inspect
 
 
 class AsyncCrudOperation:
+    """
+    Class, which implements CRUD operations for async session
+    """
     def __init__(self, async_session_factory: async_sessionmaker, model, base):
         self.async_session_factory = async_session_factory
         self.model = model
-        self.base = base
+        self.base = base  # Base class of model
 
     def validate_params(self, params: dict[str, Any]) -> bool:
+        """
+        Validate parameters for CRUD operation
+        :param params: A dictionary with parameters for CRUD operation
+        :return: True, if parameters are valid, else ValueError
+        """
         model_columns = {column.name: column.type for column in inspect(self.model).columns}
         for key, value in params.items():
             if key not in model_columns:
@@ -19,12 +31,21 @@ class AsyncCrudOperation:
         return True
 
     async def create(self, params: dict[str, Any]) -> None:
+        """
+        Create operation
+        :param params: A dict with parameters and values
+        :return: None
+        """
         async with self.async_session_factory() as session:
             model = self.model(**params)
             session.add(model)
             await session.commit()
 
     async def read(self) -> list[dict]:
+        """
+        Read operation
+        :return: List[dict]
+        """
         async with self.async_session_factory() as session:
             query = select(self.model)
             result = await session.execute(query)
@@ -33,6 +54,12 @@ class AsyncCrudOperation:
                     row in result]
 
     async def update_by_id(self, condition: dict[str, int], params: dict[str, Any]) -> None:
+        """
+        Update operation
+        :param condition: A dict with condition
+        :param params: Params for update
+        :return: None
+        """
         self.validate_params(params)
         if 'id' not in params:
             raise ValueError(f'Parameter "id" is missing')
@@ -46,6 +73,11 @@ class AsyncCrudOperation:
             await session.commit()
 
     async def delete_by_id(self, condition: dict[str, Any]) -> None:
+        """
+        Delete operation
+        :param condition: A dict with condition
+        :return: None
+        """
         if 'id' not in condition:
             raise ValueError(f'Parameter "id" is missing')
         id = condition['id']

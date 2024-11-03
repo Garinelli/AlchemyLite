@@ -54,6 +54,13 @@ class SyncCrudOperation:
             return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
                     row in result]
 
+    def read_by_id(self, id: int) -> list[dict]:
+        with self.session_factory() as session:
+            query = select(self.model).where(self.model.id == id)
+            result = session.execute(query).scalars().all()
+            return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
+                    row in result]
+
     def limited_read(self, limit: int = 50, offset: int = 0) -> list[dict]:
         """
         Read operation with limit and offset

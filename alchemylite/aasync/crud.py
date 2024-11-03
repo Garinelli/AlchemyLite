@@ -42,7 +42,7 @@ class AsyncCrudOperation:
             session.add(model)
             await session.commit()
 
-    async def read(self) -> list[dict]:
+    async def read_all(self) -> list[dict]:
         """
         Read operation
         :return: List[dict]
@@ -53,6 +53,22 @@ class AsyncCrudOperation:
             result = result.scalars().all()
             return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
                     row in result]
+
+
+    async def limited_read(self, limit: int = 50, offset: int = 0) -> list[dict]:
+        """
+        Read operation with limit and offset
+        :param limit: limit
+        :param offset: offset
+        :return: list[dict]
+        """
+        async with self.async_session_factory() as session:
+            query = select(self.model).limit(limit).offset(offset)
+            result = await session.execute(query)
+            result = result.scalars().all()
+            return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
+                    row in result]
+
 
     async def update_by_id(self, **kwargs) -> None:
         """

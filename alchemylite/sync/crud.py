@@ -13,6 +13,7 @@ class SyncCrudOperation:
     """
     Class, which implements CRUD operations for sync session
     """
+
     def __init__(self, session_factory: sessionmaker, model, base):
         self.session_factory = session_factory
         self.model = model
@@ -42,13 +43,26 @@ class SyncCrudOperation:
             session.add(model)
             session.commit()
 
-    def read(self) -> list[dict]:
+    def read_all(self) -> list[dict]:
         """
         Read operation
         :return: List[dict]
         """
         with self.session_factory() as session:
             query = select(self.model)
+            result = session.execute(query).scalars().all()
+            return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
+                    row in result]
+
+    def limited_read(self, limit: int = 50, offset: int = 0) -> list[dict]:
+        """
+        Read operation with limit and offset
+        :param limit: limit
+        :param offset: offset
+        :return: list[dict]
+        """
+        with self.session_factory() as session:
+            query = select(self.model).limit(limit).offset(offset)
             result = session.execute(query).scalars().all()
             return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
                     row in result]

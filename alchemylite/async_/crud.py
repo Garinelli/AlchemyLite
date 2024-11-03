@@ -13,6 +13,7 @@ class AsyncCrudOperation:
     """
     Class, which implements CRUD operations for async session
     """
+
     def __init__(self, async_session_factory: async_sessionmaker, model, base):
         self.async_session_factory = async_session_factory
         self.model = model
@@ -30,18 +31,19 @@ class AsyncCrudOperation:
                 raise ValueError(f'Parameter {key} is not a valid column name')
         return True
 
-    async def create(self, params: dict[str, Any]) -> None:
+    async def create(self, **kwargs) -> None:
         """
         Create operation
         :param params: A dict with parameters and values
         :return: None
         """
+        self.validate_params(kwargs)
         async with self.async_session_factory() as session:
-            model = self.model(**params)
+            model = self.model(**kwargs)
             session.add(model)
             await session.commit()
 
-    async def read(self) -> list[dict]:
+    async def read_all(self) -> list[dict]:
         """
         Read operation
         :return: List[dict]
@@ -53,34 +55,56 @@ class AsyncCrudOperation:
             return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
                     row in result]
 
-    async def update_by_id(self, condition: dict[str, int], params: dict[str, Any]) -> None:
+    async def limited_read(self, limit: int = 50, offset: int = 0) -> list[dict]:
+        """
+        Read operation with limit and offset
+        :param limit: limit
+        :param offset: offset
+        :return: list[dict]
+        """
+        async with self.async_session_factory() as session:
+            query = select(self.model).limit(limit).offset(offset)
+            result = await session.execute(query)
+            result = result.scalars().all()
+            return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
+                    row in result]
+
+    async def read_by_id(self, id: int) -> list[dict]:
+        async with self.async_session_factory() as session:
+            query = select(self.model).where(self.model.id == id)
+            result = await session.execute(query)
+            result = result.scalars().all()
+            return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
+                    row in result]
+
+    async def update_by_id(self, **kwargs) -> None:
         """
         Update operation
         :param condition: A dict with condition
         :param params: Params for update
         :return: None
         """
-        self.validate_params(params)
-        if 'id' not in params:
+        self.validate_params(kwargs)
+        if 'id' not in kwargs:
             raise ValueError(f'Parameter "id" is missing')
-        id = condition['id']
+        id = kwargs['id']
         if type(id) is not int:
             raise ValueError(f'Parameter "id" must be an integer')
 
         async with self.async_session_factory() as session:
-            stmt = update(self.model).where(self.model.id == id).values(params)
+            stmt = update(self.model).where(self.model.id == id).values(kwargs)
             await session.execute(stmt)
             await session.commit()
 
-    async def delete_by_id(self, condition: dict[str, Any]) -> None:
+    async def delete_by_id(self, **kwargs) -> None:
         """
         Delete operation
         :param condition: A dict with condition
         :return: None
         """
-        if 'id' not in condition:
+        if 'id' not in kwargs:
             raise ValueError(f'Parameter "id" is missing')
-        id = condition['id']
+        id = kwargs['id']
         if type(id) is not int:
             raise ValueError(f'Parameter "id" must be an integer')
 

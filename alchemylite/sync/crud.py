@@ -30,15 +30,15 @@ class SyncCrudOperation:
                 raise ValueError(f'Parameter {key} is not a valid column name')
         return True
 
-    def create(self, params: dict[str, Any]) -> None:
+    def create(self, **kwargs) -> None:
         """
         Create operation
         :param params: A dict with parameters and values
         :return: None
         """
-        self.validate_params(params)
+        self.validate_params(kwargs)
         with self.session_factory() as session:
-            model = self.model(**params)
+            model = self.model(**kwargs)
             session.add(model)
             session.commit()
 
@@ -53,34 +53,34 @@ class SyncCrudOperation:
             return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
                     row in result]
 
-    def update_by_id(self, condition: dict[str, int], params: dict[str, int]) -> None:
+    def update_by_id(self, **kwargs) -> None:
         """
         Update operation
         :param condition: A dict with condition
         :param params: Params for update
         :return: None
         """
-        self.validate_params(params)
-        if 'id' not in condition:
+        self.validate_params(kwargs)
+        if 'id' not in kwargs:
             raise ValueError(f'Parameter "id" is missing')
-        id = condition['id']
+        id = kwargs['id']
         if type(id) is not int:
             raise ValueError(f'Parameter "id" must be an integer')
 
         with self.session_factory() as session:
-            stmt = update(self.model).where(self.model.id == id).values(params)
+            stmt = update(self.model).where(self.model.id == id).values(kwargs)
             session.execute(stmt)
             session.commit()
 
-    def delete_by_id(self, condition: dict[str, int]) -> None:
+    def delete_by_id(self, **kwargs) -> None:
         """
         Delete operation
         :param condition: A dict with condition
         :return: None
         """
-        if 'id' not in condition:
+        if 'id' not in kwargs:
             raise ValueError(f'Parameter "id" is missing')
-        id = condition['id']
+        id = kwargs['id']
         if type(id) is not int:
             raise ValueError(f'Parameter "id" must be an integer')
 

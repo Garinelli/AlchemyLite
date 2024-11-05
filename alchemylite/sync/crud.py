@@ -19,7 +19,7 @@ class SyncCrudOperation:
         self.model = model
         self.base = base
 
-    def validate_params(self, params: dict[str, Any]) -> bool:
+    def __validate_params(self, params: dict[str, Any]) -> bool:
         """
         Validate parameters for CRUD operation
         :param params: A dictionary with parameters for CRUD operation

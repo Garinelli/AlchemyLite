@@ -37,7 +37,7 @@ class AsyncCrudOperation:
         :param params: A dict with parameters and values
         :return: None
         """
-        self.validate_params(kwargs)
+        self.__validate_params(kwargs)
         async with self.async_session_factory() as session:
             model = self.model(**kwargs)
             session.add(model)
@@ -84,7 +84,7 @@ class AsyncCrudOperation:
         :param params: Params for update
         :return: None
         """
-        self.validate_params(kwargs)
+        self.__validate_params(kwargs)
         if 'id' not in kwargs:
             raise ValueError(f'Parameter "id" is missing')
         id = kwargs['id']

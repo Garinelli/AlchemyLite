@@ -83,10 +83,10 @@ class SyncCrudOperation:
         """
         self.__validate_params(kwargs)
         if 'id' not in kwargs:
-            raise ValueError(f'Parameter "id" is missing')
+            raise ValueError('Parameter "id" is missing')
         id = kwargs['id']
         if type(id) is not int:
-            raise ValueError(f'Parameter "id" must be an integer')
+            raise ValueError('Parameter "id" must be an integer')
 
         with self.session_factory() as session:
             stmt = update(self.model).where(self.model.id == id).values(kwargs)
@@ -100,10 +100,10 @@ class SyncCrudOperation:
         :return: None
         """
         if 'id' not in kwargs:
-            raise ValueError(f'Parameter "id" is missing')
+            raise ValueError('Parameter "id" is missing')
         id = kwargs['id']
         if type(id) is not int:
-            raise ValueError(f'Parameter "id" must be an integer')
+            raise ValueError('Parameter "id" must be an integer')
 
         with self.session_factory() as session:
             stmt = delete(self.model).where(self.model.id == id)

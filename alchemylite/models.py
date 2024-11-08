@@ -32,10 +32,16 @@ class ModelFactory:
             column_type = self.TYPES.get(column_type)
             nullable = field_params.get('null', True)
             default = field_params.get('default', None)
+            unique = field_params.get('unique', False)
+            index = field_params.get('index', False)
             if column_type:
-                attrs[field_name] = mapped_column(column_type, nullable=nullable, default=default)
+                attrs[field_name] = mapped_column(column_type,
+                                                  nullable=nullable,
+                                                  default=default,
+                                                  unique=unique,
+                                                  index=index)
             else:
-                raise ValueError(f"Тип {field_params} не поддерживается")
+                raise ValueError(f"Type {field_params} no supported")
 
         model = type(self.name, (Base,), attrs)
         return model

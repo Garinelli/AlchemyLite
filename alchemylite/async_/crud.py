@@ -113,10 +113,14 @@ class AsyncCrudOperation:
             await session.execute(stmt)
             await session.commit()
 
-    async def create_all_tables(self) -> None:
-        async with self.async_session_factory() as session:
-            self.base.metadata.create_all(bind=session.get_bind())
-
     async def delete_all_tables(self) -> None:
         async with self.async_session_factory() as session:
-            self.base.metadata.drop_all(bind=session.get_bind())
+            engine = session.bind
+            async with engine.connect() as conn:
+                await conn.run_sync(self.base.metadata.drop_all)
+
+    async def create_all_tables(self) -> None:
+        async with self.async_session_factory() as session:
+            engine = session.bind
+            async with engine.connect() as conn:
+                await conn.run_sync(self.base.metadata.create_all)

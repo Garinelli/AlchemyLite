@@ -116,11 +116,11 @@ class AsyncCrudOperation:
     async def delete_all_tables(self) -> None:
         async with self.async_session_factory() as session:
             engine = session.bind
-            async with engine.connect() as conn:
+            async with engine.begin() as conn:
                 await conn.run_sync(self.base.metadata.drop_all)
 
     async def create_all_tables(self) -> None:
         async with self.async_session_factory() as session:
             engine = session.bind
-            async with engine.connect() as conn:
+            async with engine.begin() as conn:
                 await conn.run_sync(self.base.metadata.create_all)

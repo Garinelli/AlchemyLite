@@ -1,6 +1,6 @@
 from typing import Any, Dict, Type
 
-from sqlalchemy import Integer, String, Boolean, Float, Column
+from sqlalchemy import Integer, String, Boolean, Float, Column, Date, DateTime, Time, Text
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -12,7 +12,12 @@ class Model:
         str: String,
         bool: Boolean,
         float: Float,
+        "date": Date,
+        "datetime": DateTime,
+        "time": Time,
+        "text": Text
     }
+
 
     def __init__(self, name: str, fields: Dict[str, Dict[str, Any]]):
         """
@@ -42,6 +47,13 @@ class Model:
             # Get field type from options; raise an error if unsupported
             field_type = field_options.get("type")
             column_type = self._TYPE_MAP.get(field_type)
+            string_length = field_options.get('max_len', None)
+            if field_type is str and string_length is not None:
+                if type(string_length) is not int:
+                    raise ValueError("'max_len' must be an integer.")
+                if string_length <= 0:
+                    raise ValueError("String length must be greater than 0")
+                column_type = column_type(string_length)
             if not column_type:
                 raise ValueError(f"Unsupported field type: {field_type}")
 

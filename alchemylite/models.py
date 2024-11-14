@@ -25,10 +25,9 @@ class Model:
         """
         self.name = name
         self.fields = fields
-        self = self._create_model()
 
     @property
-    def _create_model(self) -> Type[Base]:
+    def model(self) -> Type[Base]:
         """
         Generates and returns a dynamic SQLAlchemy model class.
 
@@ -62,3 +61,7 @@ class Model:
         # Dynamically create the model class
         model_class = type(self.name, (Base,), attrs)
         return model_class
+
+    @property
+    def base(self) -> Base:
+        return Base

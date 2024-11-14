@@ -1,4 +1,4 @@
-from .models import ModelFactory
+from .models import Model
 from .BaseAbstract import BaseConfig
 
-__all__ = ['ModelFactory']
+__all__ = ['Model']

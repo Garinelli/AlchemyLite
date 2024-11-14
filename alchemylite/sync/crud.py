@@ -10,6 +10,7 @@ from sqlalchemy.orm import sessionmaker
 
 from alchemylite.exceptions import BaseNotProvidedError
 
+
 class SyncCrudOperation:
     """
     Class, which implements CRUD operations for sync session

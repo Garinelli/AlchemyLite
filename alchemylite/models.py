@@ -1,11 +1,12 @@
 from typing import Any, Dict, Type
+
 from sqlalchemy import Integer, String, Boolean, Float, Column
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
 
-class ModelFactory:
+class Model:
     _TYPE_MAP = {
         int: Integer,
         str: String,
@@ -24,9 +25,10 @@ class ModelFactory:
         """
         self.name = name
         self.fields = fields
+        self = self._create_model()
 
     @property
-    def model(self) -> Type[Base]:
+    def _create_model(self) -> Type[Base]:
         """
         Generates and returns a dynamic SQLAlchemy model class.
 

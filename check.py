@@ -1,18 +1,7 @@
-import asyncio
-from sqlalchemy.ext.asyncio import AsyncSession
+from alchemylite.sync import SyncCrudOperation, SyncConfig
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
-from alchemylite.async_ import AsyncCrudOperation, AsyncConfig
 
-class Base(DeclarativeBase):
-    pass
-
-class User(Base):
-    __tablename__ = 'user'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
-    email: Mapped[str]
-
-config = AsyncConfig(
+config = SyncConfig(
     db_host="localhost",
     db_port="5432",
     db_user="postgres",
@@ -20,14 +9,27 @@ config = AsyncConfig(
     db_name="AlchemyLite"
 )
 
-crud = AsyncCrudOperation(
-    config.session, model=User, base=Base
+
+class Base(DeclarativeBase):
+    pass
+
+
+class User(Base):
+    __tablename__ = "user"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    email: Mapped[str]
+
+
+crud = SyncCrudOperation(
+    config.session, User
 )
 
-async def main():
-    await crud.delete_all_tables()
-    # await crud.create_all_tables()
-
-if __name__ == '__main__':
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-    asyncio.run(main())
+crud.create_all_tables()
+crud.create(name="User", email="email@mail.ru")
+crud.read_all()
+crud.limited_read(limit=5, offset=0)
+crud.read_by_id(id=1)
+crud.update_by_id(id=1, name="new value", email="new_emal")
+crud.delete_by_id(id=1)
+crud.delete_all_tables()

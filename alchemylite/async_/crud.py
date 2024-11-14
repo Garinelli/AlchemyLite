@@ -8,13 +8,14 @@ from sqlalchemy import select, update, delete
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.inspection import inspect
 
+from alchemylite.exceptions import BaseNotProvidedError
 
 class AsyncCrudOperation:
     """
     Class, which implements CRUD operations for async session
     """
 
-    def __init__(self, async_session_factory: async_sessionmaker, model, base):
+    def __init__(self, async_session_factory: async_sessionmaker, model, base=None):
         self.async_session_factory = async_session_factory
         self.model = model
         self.base = base  # Base class of model
@@ -114,12 +115,16 @@ class AsyncCrudOperation:
             await session.commit()
 
     async def delete_all_tables(self) -> None:
+        if self.base is None:
+            raise BaseNotProvidedError
         async with self.async_session_factory() as session:
             engine = session.bind
             async with engine.begin() as conn:
                 await conn.run_sync(self.base.metadata.drop_all)
 
     async def create_all_tables(self) -> None:
+        if self.base is None:
+            raise BaseNotProvidedError
         async with self.async_session_factory() as session:
             engine = session.bind
             async with engine.begin() as conn:

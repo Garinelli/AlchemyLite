@@ -8,16 +8,17 @@ from sqlalchemy import select, update, delete
 from sqlalchemy.inspection import inspect
 from sqlalchemy.orm import sessionmaker
 
+from alchemylite.exceptions import BaseNotProvidedError
 
 class SyncCrudOperation:
     """
     Class, which implements CRUD operations for sync session
     """
 
-    def __init__(self, session_factory: sessionmaker, model, base):
+    def __init__(self, session_factory: sessionmaker, model, base=None):
         self.session_factory = session_factory
         self.model = model
-        self.base = base
+        self.base = base  # base class of model
 
     def __validate_params(self, params: dict[str, Any]) -> bool:
         """
@@ -111,9 +112,13 @@ class SyncCrudOperation:
             session.commit()
 
     def create_all_tables(self) -> None:
+        if self.base is None:
+            raise BaseNotProvidedError
         with self.session_factory() as session:
             self.base.metadata.create_all(bind=session.get_bind())
 
     def delete_all_tables(self) -> None:
+        if self.base is None:
+            raise BaseNotProvidedError
         with self.session_factory() as session:
             self.base.metadata.drop_all(bind=session.get_bind())

@@ -7,6 +7,14 @@ Base = declarative_base()
 
 
 class Model:
+    """
+    A factory class for dynamically creating SQLAlchemy models.
+
+    This class allows you to dynamically generate SQLAlchemy models based on the provided
+    table name and field specifications. The fields should specify the column name, data type, and
+    other column options such as 'nullable', 'default', 'unique', and 'index'.
+    """
+
     _TYPE_MAP = {
         int: Integer,
         str: String,
@@ -76,4 +84,7 @@ class Model:
 
     @property
     def base(self) -> Base:
+        """
+         Returns the base class for the SQLAlchemy model.
+        """
         return Base

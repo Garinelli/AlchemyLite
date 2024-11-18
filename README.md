@@ -2,6 +2,7 @@
 ## A library that simplifies CRUD operations with PostgreSQL database.
 
 # How to use it?
+First, install the library with the command ```pip install AlchemyLite```
 First you need to create a configuration in which you need to register the database parameters  
 For synchronous operation
 ```pythonregexp

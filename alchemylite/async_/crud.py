@@ -5,18 +5,18 @@ CRUD Operations for async session
 from typing import Any
 
 from sqlalchemy import select, update, delete
-from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.inspection import inspect
 
 from alchemylite.exceptions import BaseNotProvidedError
+from alchemylite.async_ import AsyncConfig
 
 class AsyncCrudOperation:
     """
     Class, which implements CRUD operations for async session
     """
 
-    def __init__(self, async_session_factory: async_sessionmaker, model, base=None):
-        self.async_session_factory = async_session_factory
+    def __init__(self, async_session_factory: AsyncConfig, model, base=None):
+        self.async_session_factory = async_session_factory.session
         self.model = model
         self.base = base  # Base class of model
 

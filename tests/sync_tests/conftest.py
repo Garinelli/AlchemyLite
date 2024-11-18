@@ -24,7 +24,7 @@ def session():
         db_pass="qwertyQ",
         db_name="AlchemyLite"
     )
-    return config.session
+    return config
 
 
 @pytest.fixture

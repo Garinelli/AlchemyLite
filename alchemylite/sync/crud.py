@@ -6,18 +6,17 @@ from typing import Any
 
 from sqlalchemy import select, update, delete
 from sqlalchemy.inspection import inspect
-from sqlalchemy.orm import sessionmaker
 
 from alchemylite.exceptions import BaseNotProvidedError
-
+from alchemylite.sync import SyncConfig
 
 class SyncCrudOperation:
     """
     Class, which implements CRUD operations for sync session
     """
 
-    def __init__(self, session_factory: sessionmaker, model, base=None):
-        self.session_factory = session_factory
+    def __init__(self, session_factory: SyncConfig, model, base=None):
+        self.session_factory = session_factory.session
         self.model = model
         self.base = base  # base class of model
 

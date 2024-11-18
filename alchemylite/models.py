@@ -18,7 +18,6 @@ class Model:
         "text": Text
     }
 
-
     def __init__(self, name: str, fields: Dict[str, Dict[str, Any]]):
         """
         Initializes a model factory for creating SQLAlchemy models dynamically.
@@ -54,6 +53,7 @@ class Model:
                 if string_length <= 0:
                     raise ValueError("String length must be greater than 0")
                 column_type = column_type(string_length)
+
             if not column_type:
                 raise ValueError(f"Unsupported field type: {field_type}")
 

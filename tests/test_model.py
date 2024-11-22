@@ -7,7 +7,7 @@ from alchemylite import Model
 @pytest.fixture
 def model():
     user = Model(
-        name='user',
+        table_name='user',
         fields=
         {
             "name": {"type": str, "max_len": 255},
@@ -54,7 +54,7 @@ def test_primary_key(metadatas):
 def test_unsupported_type():
     with pytest.raises(ValueError, match=f"Unsupported field type: {list}"):
         model = Model(
-            name="user",
+            table_name="user",
             fields={"unsupported_field": {"type": list}}
         )
         model = model.model

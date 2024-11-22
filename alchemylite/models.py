@@ -1,6 +1,6 @@
 from typing import Any, Dict, Type
 
-from sqlalchemy import Integer, String, Boolean, Float, Column, Date, DateTime, Time, Text
+from sqlalchemy import Integer, String, Boolean, Float, Column, Date, DateTime, Time, Text, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -23,10 +23,10 @@ class Model:
         "date": Date,
         "datetime": DateTime,
         "time": Time,
-        "text": Text
+        "text": Text,
     }
 
-    def __init__(self, name: str, fields: Dict[str, Dict[str, Any]]):
+    def __init__(self, table_name: str, fields: Dict[str, Dict[str, Any]]):
         """
         Initializes a model factory for creating SQLAlchemy models dynamically.
 
@@ -35,7 +35,7 @@ class Model:
                        column options, including 'type' (data type), 'null' (nullable),
                        'default', 'unique', and 'index'.
         """
-        self.name = name
+        self.table_name = table_name
         self.fields = fields
 
     @property
@@ -46,7 +46,7 @@ class Model:
         :return: Generated SQLAlchemy model class.
         """
         attrs = {
-            '__tablename__': self.name,
+            '__tablename__': self.table_name,
             'id': Column(Integer, primary_key=True),
         }
 
@@ -71,15 +71,24 @@ class Model:
             unique = field_options.get('unique', False)
             index = field_options.get('index', False)
 
+            # Foreign Key processing
+            if field_type is int:
+                foreign_key = field_options.get('foreign_key', None)
+                if foreign_key is not None:
+                    column_type = [column_type, ForeignKey(foreign_key)]
+                else:
+                    column_type = [column_type]
+            else:
+                column_type = [column_type]
             # Create column with specified options
-            attrs[field_name] = Column(column_type,
+            attrs[field_name] = Column(*column_type,
                                        nullable=nullable,
                                        default=default,
                                        unique=unique,
                                        index=index)
 
         # Dynamically create the model class
-        model_class = type(self.name, (Base,), attrs)
+        model_class = type(self.table_name, (Base,), attrs)
         return model_class
 
     @property

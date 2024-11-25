@@ -1,4 +1,5 @@
 import pytest
+from sqlalchemy import Integer, String
 from sqlalchemy.inspection import inspect
 
 from alchemylite import Model
@@ -58,3 +59,17 @@ def test_unsupported_type():
             fields={"unsupported_field": {"type": list}}
         )
         model = model.model
+
+
+def test_correct_create_int(metadatas):
+    integer_column = metadatas.columns.get("age")
+    assert isinstance(integer_column.type, Integer)
+
+def test_correct_create_str(metadatas):
+    string_column = metadatas.columns.get("email")
+    assert isinstance(string_column.type, String)
+
+def test_correct_create_string_max_len(metadatas):
+    string_with_max_len = metadatas.columns.get("name")
+    string_with_max_len = string_with_max_len.type
+    assert str(string_with_max_len) == "VARCHAR(255)"

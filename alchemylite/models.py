@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-class Model:
+class Table:
     """
     A factory class for dynamically creating SQLAlchemy models.
 

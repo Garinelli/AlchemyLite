@@ -1,6 +1,90 @@
 # AlchemyLite
 ## A library that simplifies CRUD operations with PostgreSQL database.
 
+# What is new in 0.0.2 release?
+
+1. With this release, you can create a table in a database without using sqlalchemy syntax.  
+How to do this?
+```python
+from alchemylite import Table
+
+user = Table(
+        table_name='user',
+        fields=
+        {
+            "name": {"type": str, "max_len": 255},
+            "age": {"type": int},
+            "email": {"type": str, "unique": True, "index": True},
+            "is_admin": {"type": bool, "default": False},
+            "balance": {"type": float},
+            "joined_date": {"type": "datetime"},
+            "about_me": {"type": "text", "null": True},
+        }
+    )
+```
+The class accepts two params, the first is table name, the second is fields of table
+Types can be as follows:
+* int
+* str,
+* bool
+* float
+* "date"
+* "datetime"
+* "time"
+* "text"  
+
+If you specify a str type, you must specify a maximum length for it, using "max_len"  
+If there is no need to use max_len then use type "text"  
+You can also specify additional parameters for the row  
+* nullable - True or False. Default value - True
+* default - Your value. Default - None
+* unique - True or False. Default - False
+* index - True or False. Default - False
+
+2. There is no need to transfer config.session, just config  
+Example  
+```python
+from alchemylite.sync import SyncCrudOperation, SyncConfig
+from alchemylite import Table
+
+User = Table(
+    table_name='user',
+    fields=
+    {
+        "name": {"type": str, "max_len": 255},
+        "age": {"type": int},
+        "email": {"type": str, "unique": True, "index": True},
+        "is_admin": {"type": bool, "default": False},
+        "balance": {"type": float},
+        "joined_date": {"type": "datetime"},
+        "about_me": {"type": "text", "null": True},
+    }
+)
+
+config = SyncConfig(
+    db_host="localhost",
+    db_port="5432",
+    db_user="postgres",
+    db_pass="qwertyQ",
+    db_name="AlchemyLite"
+)
+
+crud = SyncCrudOperation(config, User)
+```
+Previously it was necessary to transfer it like this:  
+```python
+crud = SyncCrudOperation(config.session, User)
+```
+
+3. It is not necessary to pass Base to a class with CRUD operations  
+Only need to pass if you want to use the create_all_tables() and delete_all_tables() methods
+To create and delete a table
+Example
+```python
+crud = SyncCrudOperation(config, User)
+```
+
+
 # How to use it?
 First, install the library with the command ```pip install AlchemyLite```  
 First you need to create a configuration in which you need to register the database parameters  

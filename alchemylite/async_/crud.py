@@ -15,8 +15,8 @@ class AsyncCrudOperation:
     Class, which implements CRUD operations for async session
     """
 
-    def __init__(self, async_session_factory: AsyncConfig, model, base=None):
-        self.async_session_factory = async_session_factory.session
+    def __init__(self, config: AsyncConfig, model, base=None):
+        self.async_session_factory = config.session
         self.model = model
         self.base = base  # Base class of model
 

@@ -15,8 +15,8 @@ class SyncCrudOperation:
     Class, which implements CRUD operations for sync session
     """
 
-    def __init__(self, session_factory: SyncConfig, model, base=None):
-        self.session_factory = session_factory.session
+    def __init__(self, config: SyncConfig, model, base=None):
+        self.session_factory = config.session
         self.model = model
         self.base = base  # base class of model
 

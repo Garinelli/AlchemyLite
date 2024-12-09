@@ -21,6 +21,10 @@ user = Table(
             "about_me": {"type": "text", "null": True},
         }
     )
+```  
+For a class to become a sqlalchemy model, you need to access the .model property.  
+```python
+user = user.model
 ```
 The class accepts two params, the first is table name, the second is fields of table
 Types can be as follows:
@@ -60,6 +64,8 @@ User = Table(
         "about_me": {"type": "text", "null": True},
     }
 )
+
+User = User.model
 
 config = SyncConfig(
     db_host="localhost",

@@ -22,6 +22,7 @@ user = Table(
         }
     )
 ```  
+There is no need to create a row (id) with a primary key, this is done automatically by the library   
 For a class to become a sqlalchemy model, you need to access the .model property.  
 ```python
 user = user.model

@@ -90,13 +90,25 @@ Example
 ```python
 crud = SyncCrudOperation(config, User)
 ```
+4. You can also add a foreign key row  
+Example
+```python
+from alchemylite import Table
 
-
+order = Table(
+    table_name='orders',
+    fields={
+        "user": {"type": int, "foreignkey": "users.id"},
+        "item": {"type": str}
+    }
+)
+order = order.model
+```
 # How to use it?
 First, install the library with the command ```pip install AlchemyLite```  
 First you need to create a configuration in which you need to register the database parameters  
 For synchronous operation
-```pythonregexp
+```python
 from alchemylite.sync impoty SyncConfig
 
 config = SyncConfig(
@@ -108,7 +120,7 @@ config = SyncConfig(
 )
 ```
 Then, we create a class to which we pass our configuration, model class and base class of model
-```pythonregexp
+```python
 from alchemylite.sync import SyncCrudOperation
 
 crud = SyncCrudOperation(
@@ -116,7 +128,7 @@ crud = SyncCrudOperation(
 )
 ```
 For async operation
-```pythonregexp
+```python
 from alchemylite.async_ import AsyncConfig, AsyncCrudOperation
 
 config = AsyncConfig(
@@ -131,12 +143,6 @@ crud = AsyncCrudOperation(
     config.session, YourModel, Base
 )
 ```
-If you have your session, you don't need to create config class, just transfer your session
-```pythonregexp
-crud = AsyncCrudOperation(
-    your_session, YourModel, Base
-)
-``` 
 # How to perform CRUD operations?
 The library supports the following methods
 * create - Creates new data in the table.
@@ -150,7 +156,7 @@ The library supports the following methods
 
 # Examples of use
 
-```pythonregexp
+```python
 from alchemylite.sync import SyncCrudOperation, SyncConfig
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 

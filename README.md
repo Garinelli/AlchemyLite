@@ -1,7 +1,7 @@
 # AlchemyLite
 ## A library that simplifies CRUD operations with PostgreSQL database.
 
-# What is new in 0.0.2 release?
+# What is new in 0.1.0 release?
 
 1. With this release, you can create a table in a database without using sqlalchemy syntax.  
 How to do this?

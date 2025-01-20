@@ -26,4 +26,4 @@ The source `code <https://github.com/Garinelli/AlchemyLite>`_
    :caption: Contents:
 
    installation
-   Sync CRUD operations
+   sync CRUD operations

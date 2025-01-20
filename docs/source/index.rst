@@ -18,10 +18,12 @@ but do not know SQLAlchemy or SQL
 4. SThe minimum configuration to get started.
 
 The library will continue to evolve and new features will be added.
-  
+
 The source `code <https://github.com/Garinelli/AlchemyLite>`_
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   installation
+   Sync CRUD operations

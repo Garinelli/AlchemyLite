@@ -80,7 +80,7 @@ Examples of use
     
 
     crud = SyncCrudOperation(
-        config.session, User, Base
+        config, User, Base
     )
 
     crud.create_all_tables()

@@ -80,7 +80,7 @@ Examples of use
     
 
     crud = AsyncCrudOperation(
-        config.session, User, Base
+        config, User, Base
     )
 
     await crud.create_all_tables()

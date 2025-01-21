@@ -1,15 +1,15 @@
-sync CRUD operations
+async CRUD operations
 ====================
 
-The library supports both synchronous and asynchronous database queries. This section will show you how to work with the synchronous option.
+The library supports both synchronous and asynchronous database queries. This section will show you how to work with the asynchronous option.
 
 First, you need to create a config to make queries.
 
 .. code-block:: python
 
-    from alchemylite.sync import SyncConfig
+    from alchemylite.async_ import AsyncConfig
 
-    config = SyncConfig(
+    config = AsyncConfig(
         db_host="your_host",
         db_port="your_port",
         db_user="your_user",
@@ -23,9 +23,9 @@ Next, you need to create an instance of the class that will represent the method
 
 .. code-block:: python
 
-    from alchemylite.sync import SyncCrudOperation
+    from alchemylite.async_ import AsyncCrudOperation
 
-    crud = SyncCrudOperation(
+    crud = AsyncCrudOperation(
         config,
         YourModel,
         base
@@ -55,11 +55,11 @@ Examples of use
 .. code-block:: python
 
 
-    from alchemylite.sync import SyncCrudOperation, SyncConfig
+    from alchemylite.async_ import AsyncCrudOperation, AsyncConfig
     from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 
 
-    config = SyncConfig(
+    config = AsyncConfig(
         db_host="localhost",
         db_port="5432",
         db_user="postgres",
@@ -79,15 +79,15 @@ Examples of use
         email: Mapped[str]
     
 
-    crud = SyncCrudOperation(
+    crud = AsyncCrudOperation(
         config.session, User, Base
     )
 
-    crud.create_all_tables()
-    crud.create(name="User", email="email@mail.ru")
-    crud.read_all()
-    crud.limited_read(limit=5, offset=0)
-    crud.read_by_id(id=1)
-    crud.update_by_id(id=1, name="new value",)
-    crud.delete_by_id(id=1)
-    crud.delete_all_tables()
+    await crud.create_all_tables()
+    await crud.create(name="User", email="email@mail.ru")
+    await crud.read_all()
+    await crud.limited_read(limit=5, offset=0)
+    await crud.read_by_id(id=1)
+    await crud.update_by_id(id=1, name="new value",)
+    await crud.delete_by_id(id=1)
+    await crud.delete_all_tables()

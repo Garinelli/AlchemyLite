@@ -1,4 +1,4 @@
-Working with Tables and Fields
+working with Tables and Fields
 ==============================
 
 This section will show you how to create tables using AlchemyLite.
@@ -7,21 +7,21 @@ To create use the following approach
 
 .. code-block:: python
     
-    from alchemylite import Table
+ from alchemylite import Table
 
-    user = Table(
-        table_name='user',
-        fields=
-        {
-            "name": {"type": str, "max_len": 255},
-            "age": {"type": int},
-            "email": {"type": str, "unique": True, "index": True},
-            "is_admin": {"type": bool, "default": False},
-            "balance": {"type": float},
-            "joined_date": {"type": "datetime"},
-            "about_me": {"type": "text", "null": True},
-        }
-    )
+ user = Table(
+     table_name='user',
+     fields=
+     {
+         "name": {"type": str, "max_len": 255},
+         "age": {"type": int},
+         "email": {"type": str, "unique": True, "index": True},
+         "is_admin": {"type": bool, "default": False},
+         "balance": {"type": float},
+         "joined_date": {"type": "datetime"},
+         "about_me": {"type": "text", "null": True},
+     }
+ )
 
 When creating an instance of a class, two parameters are passed to the constructor:
 
@@ -34,7 +34,7 @@ For a class to become a sqlalchemy model, you need to access the .model property
 
 .. code-block:: python
 
-    user = user.model
+ user = user.model
 
 The class accepts two params, the first is table name, the second is fields of table Types can be as follows:
 
@@ -61,18 +61,18 @@ You can also specify additional parameters for the row
 You can also add a foreign key row. Example:
 
 .. code-block:: python
-    
-    from alchemylite import Table
 
-    order = Table(
-        table_name='orders',
-        fields={
-            "user": {"type": int, "foreignkey": "users.id"},
-            "item": {"type": str}
-        }
-    )
+ from alchemylite import Table
 
-    order = order.model
+ order = Table(
+     table_name='orders',
+     fields={
+         "user": {"type": int, "foreignkey": "users.id"},
+         "item": {"type": str}
+     }
+ )
+
+ order = order.model
 
 We have now learned how to create tables using only Python syntax.
 

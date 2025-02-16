@@ -77,3 +77,37 @@ You can also add a foreign key row. Example:
 We have now learned how to create tables using only Python syntax.
 
 You can also use these models in SyncCrudOperation and AsyncCrudOperation classes.
+
+.. code-block:: python
+
+    from alchemylite import Table
+    from alchemylite.sync import SyncConfig, SyncCrudOperation
+    from psycopg.types import datetime
+
+    user = Table(
+        table_name="user",
+        fields={
+            "name": {"type": str, "max_len": 255},
+            "age": {"type": int},
+            "email": {"type": str, "unique": True, "index": True},
+        },
+    )
+
+    user = user.model
+
+    config = SyncConfig(
+        db_user="postgres",
+        db_name="postgres",
+        db_pass="postgres",
+        db_host="localhost",
+        db_port="5433",
+    )
+
+    crud = SyncCrudOperation(config, user, user.base)
+
+The same is done with the asynchronous approach.
+
+
+
+
+

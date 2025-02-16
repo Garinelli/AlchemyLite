@@ -1,6 +1,7 @@
 from typing import Any, Dict, Type
 
-from sqlalchemy import Integer, String, Boolean, Float, Column, Date, DateTime, Time, Text, ForeignKey
+from sqlalchemy import Integer, String, Boolean, Float, Column, Date, DateTime, Time, Text, \
+    ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -48,6 +49,7 @@ class Table:
         attrs = {
             '__tablename__': self.table_name,
             'id': Column(Integer, primary_key=True),
+            'base': Base
         }
 
         for field_name, field_options in self.fields.items():
@@ -90,10 +92,3 @@ class Table:
         # Dynamically create the model class
         model_class = type(self.table_name, (Base,), attrs)
         return model_class
-
-    @property
-    def base(self) -> Base:
-        """
-         Returns the base class for the SQLAlchemy model.
-        """
-        return Base

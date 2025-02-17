@@ -84,9 +84,9 @@ Examples of use
 
  await crud.create_all_tables()
  await crud.create(name="User", email="email@mail.ru")
- await crud.read_all()
- await crud.limited_read(limit=5, offset=0)
- await crud.read_by_id(id=1)
+ await crud.read_all()  # [{'name': 'User', 'email': 'email@mail.ru'}]
+ await crud.limited_read(limit=5, offset=0)  # [{'name': 'User', 'email': 'email@mail.ru'}]
+ await crud.read_by_id(id=1)  # [{'name': 'User', 'email': 'email@mail.ru'}]
  await crud.update_by_id(id=1, name="new value",)
  await crud.delete_by_id(id=1)
  await crud.delete_all_tables()

@@ -5,15 +5,24 @@ Configuration for async session
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 from alchemylite import BaseConfig
-
+from alchemylite.exceptions import IncorrectDbmsName
 
 class AsyncConfig(BaseConfig):
     """
     Class for configuring async sessions
     """
+
+    DB_URLS = {
+        'postgresql': 'postgresql+asyncpg://{}:{}@{}:{}/{}',
+        'mysql': 'mysql+aiomysql://{}:{}@{}:{}/{}'
+    }
+
     @property
     def DATABASE_URL(self) -> str:
-        return f"postgresql+asyncpg://{self.db_user}:{self.db_pass}@{self.db_host}:{self.db_port}/{self.db_name}"
+        db_type = (self.DB_URLS).get((self.db_type).lower())
+        if db_type is None:
+            raise IncorrectDbmsName
+        return db_type.format(self.db_user,self.db_pass,self.db_host,self.db_port,self.db_name)
 
     @property
     def session(self):

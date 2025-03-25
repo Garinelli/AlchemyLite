@@ -1,1 +1,1 @@
-from .base_exception import BaseNotProvidedError
+from .base_exception import BaseNotProvidedError, IncorrectDbmsName

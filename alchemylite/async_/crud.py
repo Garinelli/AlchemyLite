@@ -7,7 +7,7 @@ from typing import Any
 from sqlalchemy import select, update, delete
 from sqlalchemy.inspection import inspect
 
-from alchemylite.exceptions import BaseNotProvidedError
+from alchemylite.exceptions import BaseNotProvidedError, IncorrectConfig 
 from alchemylite.async_ import AsyncConfig
 
 class AsyncCrudOperation:
@@ -16,6 +16,8 @@ class AsyncCrudOperation:
     """
 
     def __init__(self, config: AsyncConfig, model, base=None):
+        if not isinstance(config, AsyncConfig):
+            raise IncorrectConfig
         self.async_session_factory = config.session
         self.model = model
         self.base = base  # Base class of model

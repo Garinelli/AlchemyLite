@@ -2,8 +2,8 @@ import pytest
 
 @pytest.mark.asyncio
 async def test_create(async_crud):
-    await async_crud.delete_all_tables()
-    await async_crud.create_all_tables()
+    await async_crud.delete_table()
+    await async_crud.create_table()
     await async_crud.create(name='test', email='<EMAIL>')
 
     result = (await async_crud.read_all())[0]

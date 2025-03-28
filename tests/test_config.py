@@ -49,7 +49,7 @@ def test_correct_configuration(correct_configuration, model):
         model,
         model.base
     )
-    crud.create_all_tables()
+    crud.create_table()
 
 def test_incorrect_configuration(incorrect_configuration, model):
     with pytest.raises(IncorrectDbmsName, match=f"An incorrect DBMS name was specified.\nDocumentation: link"):
@@ -58,6 +58,6 @@ def test_incorrect_configuration(incorrect_configuration, model):
             model,
             model.base
         )
-        crud.create_all_tables()
+        crud.create_table()
 
 

@@ -32,7 +32,6 @@ class AsyncCrudOperation:
         for key, value in params.items():
             if key not in model_columns:
                 raise ValueError(f'Parameter {key} is not a valid column name')
-        return True
 
     async def create(self, **kwargs) -> None:
         """
@@ -93,7 +92,6 @@ class AsyncCrudOperation:
         id = kwargs['id']
         if type(id) is not int:
             raise ValueError(f'Parameter "id" must be an integer')
-
         async with self.async_session_factory() as session:
             stmt = update(self.model).where(self.model.id == id).values(kwargs)
             await session.execute(stmt)
@@ -110,13 +108,12 @@ class AsyncCrudOperation:
         id = kwargs['id']
         if type(id) is not int:
             raise ValueError(f'Parameter "id" must be an integer')
-
         async with self.async_session_factory() as session:
             stmt = delete(self.model).where(self.model.id == id)
             await session.execute(stmt)
             await session.commit()
 
-    async def delete_all_tables(self) -> None:
+    async def delete_table(self) -> None:
         if self.base is None:
             raise BaseNotProvidedError
         async with self.async_session_factory() as session:
@@ -124,7 +121,7 @@ class AsyncCrudOperation:
             async with engine.begin() as conn:
                 await conn.run_sync(self.base.metadata.drop_all)
 
-    async def create_all_tables(self) -> None:
+    async def create_table(self) -> None:
         if self.base is None:
             raise BaseNotProvidedError
         async with self.async_session_factory() as session:

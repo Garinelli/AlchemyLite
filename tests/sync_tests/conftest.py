@@ -22,7 +22,7 @@ def session():
         db_port="5432",
         db_user="postgres",
         db_pass="qwertyQ",
-        db_name="AlchemyLite",
+        db_name="postgres",
         db_type="postgresql"
     )
 

@@ -1,8 +1,8 @@
 import pytest
 
 def test_create(sync_crud):
-    sync_crud.delete_all_tables()
-    sync_crud.create_all_tables()
+    sync_crud.delete_table()
+    sync_crud.create_table()
     sync_crud.create(name='test', email='<EMAIL>')
 
     result = (sync_crud.read_all())[0]

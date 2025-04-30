@@ -19,10 +19,12 @@ class BaseConfig(ABC):
         self.db_name = db_name
         self.db_type = db_type
 
+
     @property
     @abstractmethod
     def DATABASE_URL(self) -> str:
         pass
+
 
     @property
     @abstractmethod

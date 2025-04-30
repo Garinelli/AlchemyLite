@@ -26,7 +26,6 @@ class Table:
         "time": Time,
         "text": Text,
     }
-
     def __init__(self, table_name: str, fields: Dict[str, Dict[str, Any]]):
         """
         Initializes a model factory for creating SQLAlchemy models dynamically.
@@ -38,6 +37,7 @@ class Table:
         """
         self.table_name = table_name
         self.fields = fields
+
 
     @property
     def model(self) -> Type[Base]:

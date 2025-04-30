@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from alchemylite import BaseConfig
 from alchemylite.exceptions import IncorrectDbmsName
 
+
 class SyncConfig(BaseConfig):
     """
     Class for configuring async sessions
@@ -23,6 +24,7 @@ class SyncConfig(BaseConfig):
         if db_type is None:
             raise IncorrectDbmsName
         return db_type.format(self.db_user,self.db_pass,self.db_host,self.db_port,self.db_name)
+
 
     @property
     def session(self) -> sessionmaker:

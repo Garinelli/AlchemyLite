@@ -1,11 +1,10 @@
 """
 Configuration for async session
 """
-
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
-
 from alchemylite import BaseConfig
 from alchemylite.exceptions import IncorrectDbmsName
+
 
 class AsyncConfig(BaseConfig):
     """
@@ -25,7 +24,7 @@ class AsyncConfig(BaseConfig):
         return db_type.format(self.db_user,self.db_pass,self.db_host,self.db_port,self.db_name)
 
     @property
-    def session(self):
+    def session(self) -> async_sessionmaker:
         async_engine = create_async_engine(
             url=self.DATABASE_URL,
         )

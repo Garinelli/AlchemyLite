@@ -1,27 +1,22 @@
 """
 Configuration for async session
 """
+import os 
+
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from alchemylite import BaseConfig
-from alchemylite.exceptions import IncorrectDbmsName
+from alchemylite.exceptions import SQLiteDbDoesNotExists
 
 
-class AsyncConfig(BaseConfig):
+class AsyncPostgresConfig(BaseConfig):
     """
-    Class for configuring async sessions
+    Class for configuring PostgreSQL async sessions
     """
-
-    DB_URLS = {
-        'postgresql': 'postgresql+asyncpg://{}:{}@{}:{}/{}',
-        'mysql': 'mysql+aiomysql://{}:{}@{}:{}/{}'
-    }
 
     @property
     def DATABASE_URL(self) -> str:
-        db_type = (self.DB_URLS).get((self.db_type).lower())
-        if db_type is None:
-            raise IncorrectDbmsName
-        return db_type.format(self.db_user,self.db_pass,self.db_host,self.db_port,self.db_name)
+        return f'postgresql+asyncpg://{self.db_user}:{self.db_pass}@{self.db_host}:{self.db_port}/{self.db_name}'
+
 
     @property
     def session(self) -> async_sessionmaker:
@@ -33,3 +28,53 @@ class AsyncConfig(BaseConfig):
             expire_on_commit=False,
         )
         return async_session
+
+
+class AsyncMySqlConfig(BaseConfig):
+    """
+    Class for configuring MySQL async sessions
+    """
+
+    @property
+    def DATABASE_URL(self) -> str:
+        return f'mysql+aiomysql://{self.db_user}:{self.db_pass}@{self.db_host}:{self.db_port}/{self.db_name}'
+
+
+    @property
+    def session(self) -> async_sessionmaker:
+        async_engine = create_async_engine(
+            url=self.DATABASE_URL,
+        )
+        async_session = async_sessionmaker(
+            async_engine,
+            expire_on_commit=False,
+        )
+        return async_session
+
+
+class AsyncSqliteConfig:
+    """
+    Class for configuring SQLite async sessions
+    """
+
+    def __init__(self, db_path: str) -> None:
+        self._db_path = db_path
+    
+
+    @property
+    def DATABASE_URL(self) -> str:
+        return f'sqlite+aiosqlite:///{self._db_path}'
+
+
+    @property
+    def session(self) -> async_sessionmaker:
+        if not os.path.exists(self._db_path):
+            raise SQLiteDbDoesNotExists
+        async_engine = create_async_engine(
+            url=self.DATABASE_URL,
+        )
+        async_session = async_sessionmaker(
+            async_engine,
+            expire_on_commit=False,
+        )
+        return async_session     

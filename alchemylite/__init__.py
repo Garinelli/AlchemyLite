@@ -1,4 +1,4 @@
 from .models import Table
-from .BaseAbstract import BaseConfig
+from .BaseAbstract import BaseConfig, BaseSQLiteConfig
 
-__all__ = ['Table', 'BaseConfig']
+__all__ = ['Table', 'BaseConfig', 'BaseSQLiteConfig']

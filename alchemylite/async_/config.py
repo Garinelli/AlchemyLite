@@ -4,7 +4,7 @@ Configuration for async session
 import os 
 
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
-from alchemylite import BaseConfig
+from alchemylite import BaseConfig, BaseSQLiteConfig
 from alchemylite.exceptions import SQLiteDbDoesNotExists
 
 
@@ -52,14 +52,10 @@ class AsyncMySqlConfig(BaseConfig):
         return async_session
 
 
-class AsyncSqliteConfig:
+class AsyncSqliteConfig(BaseSQLiteConfig):
     """
     Class for configuring SQLite async sessions
     """
-
-    def __init__(self, db_path: str) -> None:
-        self._db_path = db_path
-    
 
     @property
     def DATABASE_URL(self) -> str:

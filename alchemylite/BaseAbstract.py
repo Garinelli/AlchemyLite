@@ -28,3 +28,20 @@ class BaseConfig(ABC):
     @abstractmethod
     def session(self):
         pass
+
+class BaseSQLiteConfig(ABC):
+    """Abstract base class for SQLite configuration."""
+    def __init(self, db_path: str) -> None:
+        self._db_path = db_path
+
+
+    @property
+    @abstractmethod
+    def DATABASE_URL(self) -> str:
+        pass
+
+
+    @property
+    @abstractmethod
+    def session(self):
+        pass

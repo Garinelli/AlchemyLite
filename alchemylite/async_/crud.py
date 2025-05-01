@@ -1,20 +1,21 @@
 """
 CRUD Operations for async session
 """
-from typing import Any
+from typing import Any, Union
 
 from sqlalchemy import select, update, delete
 from sqlalchemy.inspection import inspect
-from alchemylite.exceptions import BaseNotProvidedError, IncorrectConfig 
-from alchemylite.async_ import AsyncConfig
+from alchemylite.exceptions import BaseNotProvidedError, IncorrectConfig
+from alchemylite.async_ import AsyncPostgresConfig, AsyncMySqlConfig, AsyncSqliteConfig 
+from alchemylite import BaseAbstract, BaseSQLiteConfig
 
 
 class AsyncCrudOperation:
     """
     Class, which implements CRUD operations for async session
     """
-    def __init__(self, config: AsyncConfig, model, base=None):
-        if not isinstance(config, AsyncConfig):
+    def __init__(self, config: Union[AsyncPostgresConfig, AsyncMySqlConfig, AsyncSqliteConfig], model, base=None):
+        if not isinstance(config, BaseAbstract) or not isinstance(config, BaseSQLiteConfig):
             raise IncorrectConfig
         self.async_session_factory = config.session
         self.model = model

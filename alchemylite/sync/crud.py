@@ -2,19 +2,21 @@
 CRUD Operations for sync session
 """
 
-from typing import Any
+from typing import Any, Union
 
 from sqlalchemy import select, update, delete
 from sqlalchemy.inspection import inspect
-from alchemylite.exceptions import BaseNotProvidedError
-from alchemylite.sync import SyncConfig
-
+from alchemylite.exceptions import BaseNotProvidedError, IncorrectConfig
+from alchemylite.sync import SyncPostgresConfig, SyncMySqlConfig, SyncSqliteConfig
+from alchemylite import BaseAbstract, BaseSQLiteConfig
 
 class SyncCrudOperation:
     """
     Class, which implements CRUD operations for sync session
     """
-    def __init__(self, config: SyncConfig, model, base=None):
+    def __init__(self, config: Union[SyncPostgresConfig, SyncMySqlConfig, SyncSqliteConfig], model, base=None):
+        if not isinstance(config, BaseAbstract) or not isinstance(config, BaseSQLiteConfig):
+            raise IncorrectConfig
         self.session_factory = config.session
         self.model = model
         self.base = base  # base class of model

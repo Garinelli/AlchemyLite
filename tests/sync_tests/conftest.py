@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 
-from alchemylite.sync import SyncCrudOperation, SyncConfig
+from alchemylite.sync import SyncCrudOperation, SyncPostgresConfig
 
 
 class Base(DeclarativeBase):
@@ -17,13 +17,12 @@ class User(Base):
 
 @pytest.fixture(scope='module')
 def session():
-    config = SyncConfig(
+    config = SyncPostgresConfig(
         db_host="localhost",
         db_port="5432",
         db_user="postgres",
         db_pass="qwertyQ",
         db_name="postgres",
-        db_type="postgresql"
     )
 
     return config

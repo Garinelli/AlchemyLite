@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 
-from alchemylite.async_ import AsyncCrudOperation, AsyncConfig
+from alchemylite.async_ import AsyncCrudOperation, AsyncPostgresConfig
 
 
 class Base(DeclarativeBase):
@@ -17,13 +17,12 @@ class User(Base):
 
 @pytest.fixture(scope='module')
 def session():
-    config = AsyncConfig(
+    config = AsyncPostgresConfig(
         db_host="localhost",
         db_port="5432",
         db_user="postgres",
         db_pass="qwertyQ",
         db_name="AlchemyLite",
-        db_type="postgresql"
     )
     return config
 

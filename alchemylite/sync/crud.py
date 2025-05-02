@@ -15,8 +15,8 @@ class SyncCrudOperation:
     Class, which implements CRUD operations for sync session
     """
     def __init__(self, config: Union[SyncPostgresConfig, SyncMySqlConfig, SyncSqliteConfig], model, base=None):
-        if not isinstance(config, BaseConfig) or not isinstance(config, BaseSQLiteConfig):
-            raise IncorrectConfig
+        # if not isinstance(config, BaseConfig) or not isinstance(config, BaseSQLiteConfig):
+        #     raise IncorrectConfig
         self.session_factory = config.session
         self.model = model
         self.base = base  # base class of model

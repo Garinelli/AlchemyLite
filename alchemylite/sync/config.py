@@ -6,7 +6,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from alchemylite import BaseConfig
+from alchemylite import BaseConfig, BaseSQLiteConfig
 from alchemylite.exceptions import SQLiteDbDoesNotExists
 
 
@@ -50,13 +50,17 @@ class SyncMySqlConfig(BaseConfig):
         return session_factory
 
 
-class SyncSqliteConfig:
+class SyncSqliteConfig(BaseSQLiteConfig):
     """
     Class for configuring SQLite sync sessions
     """
 
     def __init__(self, db_path: str) -> None:
         self._db_path = db_path
+    
+    @property
+    def DATABASE_URL(self) -> str:
+        return f'sqlite:///{self._db_path}'
     
 
     @property

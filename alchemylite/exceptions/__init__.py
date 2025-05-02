@@ -1,7 +1,6 @@
 from .exceptions import (
-    BaseNotProvidedError, IncorrectDbmsName, IncorrectConfig,
+    BaseNotProvidedError,  IncorrectConfig,
     SQLiteDbDoesNotExists
 )
 
-__all__ = ['BaseNotProvidedError', 'IncorrectDbmsName',
-            'IncorrectConfig', 'SQLiteDbDoesNotExists']
+__all__ = ['BaseNotProvidedError', 'IncorrectConfig', 'SQLiteDbDoesNotExists']

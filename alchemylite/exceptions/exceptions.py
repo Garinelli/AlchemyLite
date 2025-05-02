@@ -8,7 +8,7 @@ class BaseNotProvidedError(Exception):
 class IncorrectConfig(Exception):
     """Exception thrown when specifying invalid config instance in AsyncCrudOperation/SyncCrudOperation"""
     def __init__(self):
-        self.message = 'The passed config must be an instance of the SyncConfig/AsyncConfig class.'
+        self.message = 'The passed config must be an instance of the config class.'
         super().__init__(self.message)
 
 

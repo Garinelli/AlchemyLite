@@ -1,7 +1,6 @@
 """
 CRUD Operations for sync session
 """
-
 from typing import Any, Union
 
 from sqlalchemy import select, update, delete
@@ -10,19 +9,21 @@ from alchemylite.exceptions import BaseNotProvidedError, IncorrectConfig
 from alchemylite.sync import SyncPostgresConfig, SyncMySqlConfig, SyncSqliteConfig
 from alchemylite import BaseConfig, BaseSQLiteConfig
 
+
 class SyncCrudOperation:
     """
     Class, which implements CRUD operations for sync session
     """
-    def __init__(self, config: Union[SyncPostgresConfig, SyncMySqlConfig, SyncSqliteConfig], model, base=None):
-        # if not isinstance(config, BaseConfig) or not isinstance(config, BaseSQLiteConfig):
-        #     raise IncorrectConfig
+    def __init__(self, config: Union[SyncPostgresConfig, SyncMySqlConfig, SyncSqliteConfig], 
+                 model, base=None) -> None:
+        if not (isinstance(config, BaseConfig) or isinstance(config, BaseSQLiteConfig)):
+            raise IncorrectConfig
         self.session_factory = config.session
         self.model = model
         self.base = base  # base class of model
 
 
-    def __validate_params(self, params: dict[str, Any]) -> bool:
+    def __validate_params(self, params: dict[str, Any]) -> None:
         """
         Validate parameters for CRUD operation
         :param params: A dictionary with parameters for CRUD operation

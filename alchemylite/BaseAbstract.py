@@ -31,7 +31,7 @@ class BaseConfig(ABC):
 
 class BaseSQLiteConfig(ABC):
     """Abstract base class for SQLite configuration."""
-    def __init(self, db_path: str) -> None:
+    def __init__(self, db_path: str) -> None:
         self._db_path = db_path
 
 

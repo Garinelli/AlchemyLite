@@ -15,7 +15,6 @@ class Table:
     table name and field specifications. The fields should specify the column name, data type, and
     other column options such as 'nullable', 'default', 'unique', and 'index'.
     """
-
     _TYPE_MAP = {
         int: Integer,
         str: String,
@@ -26,7 +25,8 @@ class Table:
         "time": Time,
         "text": Text,
     }
-    def __init__(self, table_name: str, fields: Dict[str, Dict[str, Any]]):
+    
+    def __init__(self, table_name: str, fields: Dict[str, Dict[str, Any]]) -> None:
         """
         Initializes a model factory for creating SQLAlchemy models dynamically.
 

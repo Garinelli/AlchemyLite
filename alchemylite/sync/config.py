@@ -58,6 +58,7 @@ class SyncSqliteConfig(BaseSQLiteConfig):
     def __init__(self, db_path: str) -> None:
         self._db_path = db_path
     
+    
     @property
     def DATABASE_URL(self) -> str:
         return f'sqlite:///{self._db_path}'

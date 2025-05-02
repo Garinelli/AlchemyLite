@@ -14,22 +14,23 @@ class AsyncCrudOperation:
     """
     Class, which implements CRUD operations for async session
     """
-    def __init__(self, config: Union[AsyncPostgresConfig, AsyncMySqlConfig, AsyncSqliteConfig], model, base=None):
-        if not isinstance(config, BaseConfig) or not isinstance(config, BaseSQLiteConfig):
+    def __init__(self, config: Union[AsyncPostgresConfig, AsyncMySqlConfig, AsyncSqliteConfig],
+                  model, base=None) -> None:
+        if not (isinstance(config, BaseConfig) or isinstance(config, BaseSQLiteConfig)):
             raise IncorrectConfig
         self.async_session_factory = config.session
         self.model = model
         self.base = base  # Base class of model
 
 
-    def __validate_params(self, params: dict[str, Any]) -> bool:
+    def __validate_params(self, params: dict[str, Any]) -> None:
         """
         Validate parameters for CRUD operation
         :param params: A dictionary with parameters for CRUD operation
         :return: True, if parameters are valid, else ValueError
         """
         model_columns = {column.name: column.type for column in inspect(self.model).columns}
-        for key, value in params.items():
+        for key, _ in params.items():
             if key not in model_columns:
                 raise ValueError(f'Parameter {key} is not a valid column name')
 

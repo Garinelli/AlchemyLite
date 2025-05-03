@@ -1,5 +1,6 @@
 import pytest
 
+
 def test_create(sync_crud):
     sync_crud.delete_table()
     sync_crud.create_table()

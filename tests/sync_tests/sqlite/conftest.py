@@ -3,8 +3,8 @@ import pytest
 from alchemylite import Table
 from alchemylite.sync import SyncCrudOperation, SyncSqliteConfig
 
-
 DB_PATH = (Path(__file__).parent) / 'database.db'
+
 
 model = Table(
     table_name='users',

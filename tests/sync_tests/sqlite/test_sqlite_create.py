@@ -2,6 +2,7 @@ import pytest
 from alchemylite.sync import SyncCrudOperation
 
 
+@pytest.mark.order(1)
 def test_create(sync_crud: SyncCrudOperation) -> None:
     sync_crud.delete_table()
     sync_crud.create_table()
@@ -15,6 +16,7 @@ def test_create(sync_crud: SyncCrudOperation) -> None:
     assert result['info'] == 'Python library'
 
 
+@pytest.mark.order(2)
 def test_create_with_incorrect_params(sync_crud: SyncCrudOperation):
     with pytest.raises(ValueError, match='Parameter stars is not a valid column name'):
         sync_crud.create(name='AlchemyLite', age=18, stars=1337)

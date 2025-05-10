@@ -1,6 +1,5 @@
 import pytest
 
-
 @pytest.mark.asyncio
 async def test_read_all(async_crud):
     result = (await async_crud.read_all())[0]

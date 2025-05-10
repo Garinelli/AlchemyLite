@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.asyncio
 async def test_create(async_crud):
     await async_crud.delete_table()

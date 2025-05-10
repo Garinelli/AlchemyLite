@@ -1,22 +1,18 @@
 import pytest
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 
+from alchemylite import Table
 from alchemylite.async_ import AsyncCrudOperation, AsyncPostgresConfig
 
-
-class Base(DeclarativeBase):
-    pass
-
-
-class User(Base):
-    __tablename__ = 'user'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
-    email: Mapped[str]
-
+user = Table(
+    table_name="users",
+    fields={
+        "name": {"type": "text"},
+        "email": {"type": "text"}
+    }
+).model
 
 @pytest.fixture(scope='module')
-def session():
+def session() -> AsyncPostgresConfig:
     config = AsyncPostgresConfig(
         db_host="localhost",
         db_port="5432",
@@ -28,6 +24,6 @@ def session():
 
 
 @pytest.fixture
-def async_crud(session):
-    crud = AsyncCrudOperation(session, User, Base)
+def async_crud(session) -> AsyncCrudOperation:
+    crud = AsyncCrudOperation(session, user, user.base)
     return crud

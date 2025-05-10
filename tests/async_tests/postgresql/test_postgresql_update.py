@@ -1,6 +1,5 @@
 import pytest
 
-
 @pytest.mark.asyncio
 async def test_update_by_id(async_crud):
     await async_crud.update_by_id(id=1, name='new_test', email='<EMAIL>')

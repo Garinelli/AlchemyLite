@@ -4,7 +4,6 @@ from sqlalchemy.inspection import inspect
 
 from alchemylite import Table
 
-
 @pytest.fixture
 def model():
     user = Table(
@@ -24,7 +23,6 @@ def model():
     user = user.model
 
     return user
-
 
 @pytest.fixture
 def metadatas(model):

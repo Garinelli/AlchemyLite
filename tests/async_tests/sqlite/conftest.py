@@ -6,7 +6,6 @@ from alchemylite.async_ import AsyncSqliteConfig, AsyncCrudOperation
 
 DB_PATH = (Path(__file__).parent) / 'database.db'
 
-
 model = Table(
     table_name='users',
     fields={
@@ -15,7 +14,6 @@ model = Table(
         "info": {"type": "text", "null": True}
     }
 ).model
-
 
 @pytest.fixture(scope='module')
 def session() -> AsyncSqliteConfig:

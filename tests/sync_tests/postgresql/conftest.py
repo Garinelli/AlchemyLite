@@ -1,22 +1,18 @@
 import pytest
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 
+from alchemylite import Table
 from alchemylite.sync import SyncCrudOperation, SyncPostgresConfig
 
-
-class Base(DeclarativeBase):
-    pass
-
-
-class User(Base):
-    __tablename__ = 'user'
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
-    email: Mapped[str]
-
+user = Table(
+    table_name="users",
+    fields={
+        "name": {"type": "text"},
+        "email": {"type": "text"}
+    }
+).model
 
 @pytest.fixture(scope='module')
-def session():
+def session() -> SyncPostgresConfig:
     config = SyncPostgresConfig(
         db_host="localhost",
         db_port="5432",
@@ -29,6 +25,6 @@ def session():
 
 
 @pytest.fixture
-def sync_crud(session):
-    crud = SyncCrudOperation(session, User, Base)
+def sync_crud(session) -> SyncCrudOperation:
+    crud = SyncCrudOperation(session, user, user.base)
     return crud

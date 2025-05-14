@@ -1,7 +1,7 @@
 import pytest
 
 from alchemylite import Table
-from alchemylite.async_ import AsyncCrudOperation, AsyncPostgresConfig
+from alchemylite.async_ import AsyncCrud, AsyncPostgresConfig
 
 user = Table(
     table_name="users",
@@ -24,6 +24,6 @@ def session() -> AsyncPostgresConfig:
 
 
 @pytest.fixture
-def async_crud(session) -> AsyncCrudOperation:
-    crud = AsyncCrudOperation(session, user, user.base)
+def async_crud(session) -> AsyncCrud:
+    crud = AsyncCrud(session, user, user.base)
     return crud

@@ -29,6 +29,7 @@ class BaseConfig(ABC):
     def session(self):
         pass
 
+
 class BaseSQLiteConfig(ABC):
     """Abstract base class for SQLite configuration."""
     def __init__(self, db_path: str) -> None:

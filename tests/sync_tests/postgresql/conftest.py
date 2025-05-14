@@ -1,7 +1,7 @@
 import pytest
 
 from alchemylite import Table
-from alchemylite.sync import SyncCrudOperation, SyncPostgresConfig
+from alchemylite.sync import SyncCrud, SyncPostgresConfig
 
 user = Table(
     table_name="users",
@@ -25,6 +25,6 @@ def session() -> SyncPostgresConfig:
 
 
 @pytest.fixture
-def sync_crud(session) -> SyncCrudOperation:
-    crud = SyncCrudOperation(session, user, user.base)
+def sync_crud(session) -> SyncCrud:
+    crud = SyncCrud(session, user, user.base)
     return crud

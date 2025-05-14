@@ -10,7 +10,7 @@ from alchemylite.sync import SyncPostgresConfig, SyncMySqlConfig, SyncSqliteConf
 from alchemylite import BaseConfig, BaseSQLiteConfig
 
 
-class SyncCrudOperation:
+class SyncCrud:
     """
     Class, which implements CRUD operations for sync session
     """

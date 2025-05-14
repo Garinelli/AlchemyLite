@@ -1,7 +1,7 @@
 from pathlib import Path
 import pytest 
 from alchemylite import Table
-from alchemylite.sync import SyncCrudOperation, SyncSqliteConfig
+from alchemylite.sync import SyncCrud, SyncSqliteConfig
 
 DB_PATH = (Path(__file__).parent) / 'database.db'
 
@@ -23,6 +23,6 @@ def session() -> SyncSqliteConfig:
 
 
 @pytest.fixture(scope="module")
-def sync_crud(session) -> SyncCrudOperation:
-    crud = SyncCrudOperation(session, model, model.base)
+def sync_crud(session) -> SyncCrud:
+    crud = SyncCrud(session, model, model.base)
     return crud

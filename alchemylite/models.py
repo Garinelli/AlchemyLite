@@ -4,6 +4,7 @@ from sqlalchemy import Integer, String, Boolean, Float, Column, Date, DateTime, 
     ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
+
 Base = declarative_base()
 
 

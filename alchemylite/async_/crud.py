@@ -10,7 +10,7 @@ from alchemylite.async_ import AsyncPostgresConfig, AsyncMySqlConfig, AsyncSqlit
 from alchemylite import BaseConfig, BaseSQLiteConfig
 
 
-class AsyncCrudOperation:
+class AsyncCrud:
     """
     Class, which implements CRUD operations for async session
     """

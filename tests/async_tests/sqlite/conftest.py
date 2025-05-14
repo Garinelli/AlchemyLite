@@ -2,7 +2,7 @@ from pathlib import Path
 import pytest 
 
 from alchemylite import Table 
-from alchemylite.async_ import AsyncSqliteConfig, AsyncCrudOperation
+from alchemylite.async_ import AsyncSqliteConfig, AsyncCrud
 
 DB_PATH = (Path(__file__).parent) / 'database.db'
 
@@ -22,6 +22,6 @@ def session() -> AsyncSqliteConfig:
 
 
 @pytest.fixture(scope='module')
-def async_crud(session) -> AsyncCrudOperation:
-    crud = AsyncCrudOperation(session, model, model.base)
+def async_crud(session) -> AsyncCrud:
+    crud = AsyncCrud(session, model, model.base)
     return crud 

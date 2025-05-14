@@ -16,7 +16,7 @@ class SyncCrud:
     """
     def __init__(self, config: Union[SyncPostgresConfig, SyncMySqlConfig, SyncSqliteConfig], 
                  model, base=None) -> None:
-        if not (isinstance(config, BaseConfig) or isinstance(config, BaseSQLiteConfig)):
+        if not any((isinstance(config, BaseConfig), isinstance(config, BaseSQLiteConfig))):
             raise IncorrectConfig
         self.session_factory = config.session
         self.model = model

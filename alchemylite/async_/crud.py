@@ -16,7 +16,7 @@ class AsyncCrud:
     """
     def __init__(self, config: Union[AsyncPostgresConfig, AsyncMySqlConfig, AsyncSqliteConfig],
                   model, base=None) -> None:
-        if not (isinstance(config, BaseConfig) or isinstance(config, BaseSQLiteConfig)):
+        if not any((isinstance(config, BaseConfig), isinstance(config, BaseSQLiteConfig))):
             raise IncorrectConfig
         self.async_session_factory = config.session
         self.model = model

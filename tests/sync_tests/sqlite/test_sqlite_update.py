@@ -24,7 +24,7 @@ def test_update_by_id_with_id_missing(sync_crud: SyncCrudOperation):
         sync_crud.update_by_id(name='alchemylite', info='AlchemyLite')
 
 
-@pytest.mark.order(8)
+@pytest.mark.order(9)
 def test_update_by_id_with_incorrect_params(sync_crud: SyncCrudOperation):
     with pytest.raises(ValueError, match='Parameter year is not a valid column name'):
         sync_crud.update_by_id(name='test', age=18, year='year')

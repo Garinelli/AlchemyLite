@@ -17,8 +17,8 @@ def session() -> AsyncPostgresConfig:
         db_host="localhost",
         db_port="5432",
         db_user="postgres",
-        db_pass="qwertyQ",
-        db_name="AlchemyLite",
+        db_pass="postgres",
+        db_name="postgres",
     )
     return config
 

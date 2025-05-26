@@ -2,6 +2,7 @@ import pytest
 
 
 @pytest.mark.asyncio
+@pytest.mark.order(1)
 async def test_create(async_crud):
     await async_crud.delete_table()
     await async_crud.create_table()
@@ -13,6 +14,7 @@ async def test_create(async_crud):
     assert result['email'] == '<EMAIL>'
 
 
+@pytest.mark.order(2)
 @pytest.mark.asyncio
 async def test_create_with_incorrect_params(async_crud):
     with pytest.raises(ValueError, match='Parameter password is not a valid column name'):

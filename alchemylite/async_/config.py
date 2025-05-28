@@ -30,26 +30,26 @@ class AsyncPostgresConfig(BaseConfig):
         return async_session
 
 
-class AsyncMySqlConfig(BaseConfig):
-    """
-    Class for configuring MySQL async sessions
-    """
+# class AsyncMySqlConfig(BaseConfig):
+#     """
+#     Class for configuring MySQL async sessions
+#     """
 
-    @property
-    def DATABASE_URL(self) -> str:
-        return f'mysql+aiomysql://{self.db_user}:{self.db_pass}@{self.db_host}:{self.db_port}/{self.db_name}'
+#     @property
+#     def DATABASE_URL(self) -> str:
+#         return f'mysql+aiomysql://{self.db_user}:{self.db_pass}@{self.db_host}:{self.db_port}/{self.db_name}'
 
 
-    @property
-    def session(self) -> async_sessionmaker:
-        async_engine = create_async_engine(
-            url=self.DATABASE_URL,
-        )
-        async_session = async_sessionmaker(
-            async_engine,
-            expire_on_commit=False,
-        )
-        return async_session
+#     @property
+#     def session(self) -> async_sessionmaker:
+#         async_engine = create_async_engine(
+#             url=self.DATABASE_URL,
+#         )
+#         async_session = async_sessionmaker(
+#             async_engine,
+#             expire_on_commit=False,
+#         )
+#         return async_session
 
 
 class AsyncSqliteConfig(BaseSQLiteConfig):

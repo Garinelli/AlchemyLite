@@ -1,115 +1,34 @@
 # AlchemyLite
 ## A library that simplifies CRUD operations with PostgreSQL database.
 
-# What is new in 1.1.1 release?
+# What is new in 1.2.0 release?
 [Full docs](https://alchemylite.readthedocs.io/)
-1. With this release, you can create a table in a database without using sqlalchemy syntax.  
-How to do this?
+1.This release adds support for SQLite database  
 ```python
-from alchemylite import Table
+from alchemylite.sync import SyncCrud, SyncSqliteConfig
 
-user = Table(
-        table_name='user',
-        fields=
-        {
-            "name": {"type": str, "max_len": 255},
-            "age": {"type": int},
-            "email": {"type": str, "unique": True, "index": True},
-            "is_admin": {"type": bool, "default": False},
-            "balance": {"type": float},
-            "joined_date": {"type": "datetime"},
-            "about_me": {"type": "text", "null": True},
-        }
-    )
-```  
-There is no need to create a row (id) with a primary key, this is done automatically by the library   
-For a class to become a sqlalchemy model, you need to access the .model property.  
-```python
-user = user.model
+config = SyncSqliteConfig(db_path=ABSOLUTE_DB_PATH)
+crud = SyncCrud(config, model, model.base)     
 ```
-The class accepts two params, the first is table name, the second is fields of table
-Types can be as follows:
-* int
-* str,
-* bool
-* float
-* "date"
-* "datetime"
-* "time"
-* "text"  
-
-If you specify a str type, you must specify a maximum length for it, using "max_len"  
-If there is no need to use max_len then use type "text"  
-You can also specify additional parameters for the row  
-* nullable - True or False. Default value - True
-* default - Your value. Default - None
-* unique - True or False. Default - False
-* index - True or False. Default - False
-
-2. There is no need to transfer config.session, just config  
-Example  
-```python
-from alchemylite.sync import SyncCrudOperation, SyncConfig
-from alchemylite import Table
-
-User = Table(
-    table_name='user',
-    fields=
-    {
-        "name": {"type": str, "max_len": 255},
-        "age": {"type": int},
-        "email": {"type": str, "unique": True, "index": True},
-        "is_admin": {"type": bool, "default": False},
-        "balance": {"type": float},
-        "joined_date": {"type": "datetime"},
-        "about_me": {"type": "text", "null": True},
-    }
-)
-
-User = User.model
-
-config = SyncConfig(
-    db_host="localhost",
-    db_port="5432",
-    db_user="postgres",
-    db_pass="qwertyQ",
-    db_name="AlchemyLite"
-)
-
-crud = SyncCrudOperation(config, User)
-```
-Previously it was necessary to transfer it like this:  
-```python
-crud = SyncCrudOperation(config.session, User)
-```
-
-3. It is not necessary to pass Base to a class with CRUD operations  
-Only need to pass if you want to use the create_all_tables() and delete_all_tables() methods
-To create and delete a table
-Example
-```python
-crud = SyncCrudOperation(config, User)
-```
-4. You can also add a foreign key row  
-Example
-```python
-from alchemylite import Table
-
-order = Table(
-    table_name='orders',
-    fields={
-        "user": {"type": int, "foreignkey": "users.id"},
-        "item": {"type": str}
-    }
-)
-order = order.model
-```
+2. Changing method names
+The names of some methods have been changed
+* AsyncCrudOperation -> AsyncCrud
+* SyncCrudOperation -> SyncCrud
+* delete_all_tables -> delete_table
+* create_all_tables -> create_table
+3. Configuration classes are divided by database type  
+  Asynchronous approach:  
+  * from alchemylite.async_ import AsyncPostgresConfig (for postgresql)  
+  * from alchemylite.async_ import AsyncSqliteConfig (for sqlite)  
+  Synchronous approach:  
+  * from alchemylite.sync import SyncPostgresConfig (for postgresql)  
+  * from alchemylite.sync import SyncSqliteConfig (for sqlite)  
 # How to use it?
 First, install the library with the command ```pip install AlchemyLite```  
 First you need to create a configuration in which you need to register the database parameters  
 For synchronous operation
 ```python
-from alchemylite.sync impoty SyncConfig
+from alchemylite.sync impoty SyncPostgresConfig
 
 config = SyncConfig(
     db_host="your_host",
@@ -121,17 +40,17 @@ config = SyncConfig(
 ```
 Then, we create a class to which we pass our configuration, model class and base class of model
 ```python
-from alchemylite.sync import SyncCrudOperation
+from alchemylite.sync import SyncCrud
 
-crud = SyncCrudOperation(
-    config.session, YourModel, Base
+crud = SyncCrud(
+    config, YourModel, Base
 )
 ```
 For async operation
 ```python
-from alchemylite.async_ import AsyncConfig, AsyncCrudOperation
+from alchemylite.async_ import AsyncPostgresConfig, AsyncCrud
 
-config = AsyncConfig(
+config = AsyncPostgresConfig(
     db_host="your_host",
     db_port="your_port",
     db_user="your_user",
@@ -139,8 +58,8 @@ config = AsyncConfig(
     db_name="your_db_name"
 )
 
-crud = AsyncCrudOperation(
-    config.session, YourModel, Base
+crud = AsyncCrud(
+    config, YourModel, Base
 )
 ```
 # How to perform CRUD operations?
@@ -157,11 +76,11 @@ The library supports the following methods
 # Examples of use
 
 ```python
-from alchemylite.sync import SyncCrudOperation, SyncConfig
+from alchemylite.sync import SyncCrud, SyncPostgresConfig 
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 
 
-config = SyncConfig(
+config = SyncPostgresConfig(
     db_host="localhost",
     db_port="5432",
     db_user="postgres",
@@ -181,15 +100,15 @@ class User(Base):
     email: Mapped[str]
    
 
-crud = SyncCrudOperation(
-    config.session, User, Base
+crud = SyncCrud(
+    config, User, Base
 )
 
 crud.create_all_tables()
 crud.create(name="User", email="email@mail.ru")
-crud.read_all()
-crud.limited_read(limit=5, offset=0)
-crud.read_by_id(id=1)
+print(crud.read_all())
+print(crud.limited_read(limit=5, offset=0))
+print(crud.read_by_id(id=1))
 crud.update_by_id(id=1, name="new value", email="new_emal")
 crud.delete_by_id(id=1)
 crud.delete_all_tables()

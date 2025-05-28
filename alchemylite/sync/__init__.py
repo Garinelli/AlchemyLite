@@ -1,4 +1,4 @@
-from .config import SyncMySqlConfig, SyncPostgresConfig, SyncSqliteConfig
+from .config import SyncPostgresConfig, SyncSqliteConfig
 from .crud import SyncCrud
 
-__all__ = ['SyncCrud', 'SyncMySqlConfig', 'SyncPostgresConfig', 'SyncSqliteConfig']
+__all__ = ['SyncCrud',  'SyncPostgresConfig', 'SyncSqliteConfig']

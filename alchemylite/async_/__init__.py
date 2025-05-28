@@ -1,4 +1,4 @@
-from .config import AsyncMySqlConfig, AsyncPostgresConfig, AsyncSqliteConfig
+from .config import AsyncPostgresConfig, AsyncSqliteConfig
 from .crud import AsyncCrud
 
-__all__ = ['AsyncCrud', 'AsyncMySqlConfig', 'AsyncPostgresConfig', 'AsyncSqliteConfig']
+__all__ = ['AsyncCrud', 'AsyncPostgresConfig', 'AsyncSqliteConfig']

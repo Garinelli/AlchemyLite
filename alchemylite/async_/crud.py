@@ -7,14 +7,14 @@ from sqlalchemy import select, update, delete
 from sqlalchemy.inspection import inspect
 
 from alchemylite.exceptions import BaseNotProvidedError, IncorrectConfig
-from alchemylite.async_ import AsyncPostgresConfig, AsyncMySqlConfig, AsyncSqliteConfig 
+from alchemylite.async_ import AsyncPostgresConfig, AsyncSqliteConfig 
 from alchemylite import BaseConfig, BaseSQLiteConfig
 
 class AsyncCrud:
     """
     Class, which implements CRUD operations for async session
     """
-    def __init__(self, config: Union[AsyncPostgresConfig, AsyncMySqlConfig, AsyncSqliteConfig],
+    def __init__(self, config: Union[AsyncPostgresConfig, AsyncSqliteConfig],
                   model, base=None) -> None:
         if not any((isinstance(config, BaseConfig), isinstance(config, BaseSQLiteConfig))):
             raise IncorrectConfig

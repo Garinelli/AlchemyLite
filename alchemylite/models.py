@@ -25,7 +25,7 @@ class Table:
         "date": Date,
         "datetime": DateTime,
         "time": Time,
-        "text": Text,
+        "text": Text
     }
     def __init__(self, table_name: str, fields: Dict[str, Dict[str, Any]]) -> None:
         """

@@ -5,10 +5,10 @@ from typing import Any, Union
 
 from sqlalchemy import select, update, delete
 from sqlalchemy.inspection import inspect
+
 from alchemylite.exceptions import BaseNotProvidedError, IncorrectConfig
 from alchemylite.sync import SyncPostgresConfig, SyncMySqlConfig, SyncSqliteConfig
 from alchemylite import BaseConfig, BaseSQLiteConfig
-
 
 class SyncCrud:
     """
@@ -22,7 +22,6 @@ class SyncCrud:
         self.model = model
         self.base = base  # base class of model
 
-
     def __validate_params(self, params: dict[str, Any]) -> None:
         """
         Validate parameters for CRUD operation
@@ -33,7 +32,6 @@ class SyncCrud:
         for key, value in params.items():
             if key not in model_columns:
                 raise ValueError(f'Parameter {key} is not a valid column name')
-
 
     def create(self, **kwargs) -> None:
         """
@@ -47,7 +45,6 @@ class SyncCrud:
             session.add(model)
             session.commit()
 
-
     def read_all(self) -> list[dict]:
         """
         Read operation
@@ -59,14 +56,12 @@ class SyncCrud:
             return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
                     row in result]
 
-
     def read_by_id(self, id: int) -> list[dict]:
         with self.session_factory() as session:
             query = select(self.model).where(self.model.id == id)
             result = session.execute(query).scalars().all()
             return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
                     row in result]
-
 
     def limited_read(self, limit: int = 50, offset: int = 0) -> list[dict]:
         """
@@ -80,7 +75,6 @@ class SyncCrud:
             result = session.execute(query).scalars().all()
             return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
                     row in result]
-
 
     def update_by_id(self, **kwargs) -> None:
         """
@@ -101,7 +95,6 @@ class SyncCrud:
             session.execute(stmt)
             session.commit()
 
-
     def delete_by_id(self, **kwargs) -> None:
         """
         Delete operation
@@ -119,13 +112,11 @@ class SyncCrud:
             session.execute(stmt)
             session.commit()
 
-
     def create_table(self) -> None:
         if self.base is None:
             raise BaseNotProvidedError
         with self.session_factory() as session:
             self.base.metadata.create_all(bind=session.get_bind())
-
 
     def delete_table(self) -> None:
         if self.base is None:

@@ -5,10 +5,10 @@ from typing import Any, Union
 
 from sqlalchemy import select, update, delete
 from sqlalchemy.inspection import inspect
+
 from alchemylite.exceptions import BaseNotProvidedError, IncorrectConfig
 from alchemylite.async_ import AsyncPostgresConfig, AsyncMySqlConfig, AsyncSqliteConfig 
 from alchemylite import BaseConfig, BaseSQLiteConfig
-
 
 class AsyncCrud:
     """
@@ -22,7 +22,6 @@ class AsyncCrud:
         self.model = model
         self.base = base  # Base class of model
 
-
     def __validate_params(self, params: dict[str, Any]) -> None:
         """
         Validate parameters for CRUD operation
@@ -33,7 +32,6 @@ class AsyncCrud:
         for key, _ in params.items():
             if key not in model_columns:
                 raise ValueError(f'Parameter {key} is not a valid column name')
-
 
     async def create(self, **kwargs) -> None:
         """
@@ -47,7 +45,6 @@ class AsyncCrud:
             session.add(model)
             await session.commit()
 
-
     async def read_all(self) -> list[dict]:
         """
         Read operation
@@ -59,7 +56,6 @@ class AsyncCrud:
             result = result.scalars().all()
             return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
                     row in result]
-
 
     async def limited_read(self, limit: int = 50, offset: int = 0) -> list[dict]:
         """
@@ -75,7 +71,6 @@ class AsyncCrud:
             return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
                     row in result]
 
-
     async def read_by_id(self, id: int) -> list[dict]:
         async with self.async_session_factory() as session:
             query = select(self.model).where(self.model.id == id)
@@ -83,7 +78,6 @@ class AsyncCrud:
             result = result.scalars().all()
             return [{column: getattr(row, column) for column in row.__table__.columns.keys()} for
                     row in result]
-
 
     async def update_by_id(self, **kwargs) -> None:
         """
@@ -103,7 +97,6 @@ class AsyncCrud:
             await session.execute(stmt)
             await session.commit()
 
-
     async def delete_by_id(self, **kwargs) -> None:
         """
         Delete operation
@@ -120,7 +113,6 @@ class AsyncCrud:
             await session.execute(stmt)
             await session.commit()
 
-
     async def delete_table(self) -> None:
         if self.base is None:
             raise BaseNotProvidedError
@@ -128,7 +120,6 @@ class AsyncCrud:
             engine = session.bind
             async with engine.begin() as conn:
                 await conn.run_sync(self.base.metadata.drop_all)
-
 
     async def create_table(self) -> None:
         if self.base is None:

@@ -1,6 +1,5 @@
 import pytest
 
-
 @pytest.mark.asyncio
 @pytest.mark.order(10)
 async def test_delete_by_id(async_crud):

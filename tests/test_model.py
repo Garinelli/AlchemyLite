@@ -1,4 +1,5 @@
 import pytest
+
 from sqlalchemy import Integer, String
 from sqlalchemy.inspection import inspect
 

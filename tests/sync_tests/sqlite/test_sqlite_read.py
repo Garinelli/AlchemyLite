@@ -1,6 +1,6 @@
 import pytest
-from alchemylite.sync import SyncCrud
 
+from alchemylite.sync import SyncCrud
 
 @pytest.mark.order(3)
 def test_read_all(sync_crud: SyncCrud) -> None:

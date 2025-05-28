@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 class BaseConfig(ABC):
     """
     Abstract base class for database configuration.
@@ -23,7 +22,6 @@ class BaseConfig(ABC):
     def DATABASE_URL(self) -> str:
         pass
 
-
     @property
     @abstractmethod
     def session(self):
@@ -35,12 +33,10 @@ class BaseSQLiteConfig(ABC):
     def __init__(self, db_path: str) -> None:
         self._db_path = db_path
 
-
     @property
     @abstractmethod
     def DATABASE_URL(self) -> str:
         pass
-
 
     @property
     @abstractmethod

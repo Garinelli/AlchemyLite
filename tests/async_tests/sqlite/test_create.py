@@ -1,6 +1,5 @@
 import pytest
 
-
 @pytest.mark.asyncio
 @pytest.mark.order(1)
 async def test_create(async_crud):

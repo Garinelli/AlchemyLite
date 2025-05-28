@@ -1,6 +1,5 @@
 import pytest
 
-
 @pytest.mark.asyncio
 @pytest.mark.order(3)
 async def test_read_all(async_crud):

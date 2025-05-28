@@ -1,12 +1,13 @@
 from typing import Any, Dict, Type
 
-from sqlalchemy import Integer, String, Boolean, Float, Column, Date, DateTime, Time, Text, \
-    ForeignKey
+from sqlalchemy import (Integer, String, Boolean,
+                        Float, Column, Date,
+                        DateTime, Time, Text,
+                        ForeignKey)
+
 from sqlalchemy.ext.declarative import declarative_base
 
-
 Base = declarative_base()
-
 
 class Table:
     """
@@ -26,7 +27,6 @@ class Table:
         "time": Time,
         "text": Text,
     }
-    
     def __init__(self, table_name: str, fields: Dict[str, Dict[str, Any]]) -> None:
         """
         Initializes a model factory for creating SQLAlchemy models dynamically.
@@ -38,7 +38,6 @@ class Table:
         """
         self.table_name = table_name
         self.fields = fields
-
 
     @property
     def model(self) -> Type[Base]:

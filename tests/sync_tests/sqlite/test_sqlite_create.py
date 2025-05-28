@@ -1,6 +1,6 @@
 import pytest 
-from alchemylite.sync import SyncCrud
 
+from alchemylite.sync import SyncCrud
 
 @pytest.mark.order(1)
 def test_create(sync_crud: SyncCrud) -> None:

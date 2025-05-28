@@ -1,6 +1,5 @@
 import pytest
 
-
 @pytest.mark.order(1)
 def test_create(sync_crud):
     sync_crud.delete_table()

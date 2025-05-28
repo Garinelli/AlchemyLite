@@ -1,6 +1,6 @@
 import pytest
-from alchemylite.sync import SyncCrud
 
+from alchemylite.sync import SyncCrud
 
 @pytest.mark.order(6)
 def test_update_by_id(sync_crud: SyncCrud):

@@ -1,6 +1,5 @@
 import pytest
 
-
 @pytest.mark.order(6)
 def test_update_by_id(sync_crud):
     sync_crud.update_by_id(id=1, name='new_test', email='<EMAIL>')

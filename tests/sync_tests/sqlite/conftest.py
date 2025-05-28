@@ -1,5 +1,7 @@
 from pathlib import Path
+
 import pytest 
+
 from alchemylite import Table
 from alchemylite.sync import SyncCrud, SyncSqliteConfig
 

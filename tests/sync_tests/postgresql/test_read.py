@@ -1,6 +1,5 @@
 import pytest
 
-
 @pytest.mark.order(3)
 def test_read_all(sync_crud):
     result = (sync_crud.read_all())[0]

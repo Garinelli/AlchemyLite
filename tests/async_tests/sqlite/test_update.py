@@ -1,6 +1,5 @@
 import pytest
 
-
 @pytest.mark.asyncio
 @pytest.mark.order(6)
 async def test_update_by_id(async_crud):

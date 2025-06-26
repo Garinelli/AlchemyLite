@@ -28,9 +28,9 @@ First, install the library with the command ```pip install AlchemyLite```
 First you need to create a configuration in which you need to register the database parameters  
 For synchronous operation
 ```python
-from alchemylite.sync impoty SyncPostgresConfig
+from alchemylite.sync import SyncPostgresConfig
 
-config = SyncConfig(
+config = SyncPostgresConfig(
     db_host="your_host",
     db_port="your_port",
     db_user="your_user",

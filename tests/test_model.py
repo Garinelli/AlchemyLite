@@ -5,12 +5,12 @@ from sqlalchemy.inspection import inspect
 
 from alchemylite import Table
 
+
 @pytest.fixture
 def model():
     user = Table(
         table_name='user',
-        fields=
-        {
+        fields={
             "name": {"type": str, "max_len": 255},
             "age": {"type": int},
             "email": {"type": str, "unique": True, "index": True},
@@ -24,6 +24,7 @@ def model():
     user = user.model
 
     return user
+
 
 @pytest.fixture
 def metadatas(model):
@@ -43,7 +44,7 @@ def test_correct_model_attrs(metadatas):
     assert name_type == "VARCHAR(255)"
     assert age_type == "INTEGER"
     assert email_type == 'VARCHAR'
-    assert email_unique == True
+    assert email_unique is True
 
 
 def test_correct_table_name(model):

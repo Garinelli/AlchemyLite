@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.asyncio
 @pytest.mark.order(6)
 async def test_update_by_id(async_crud):
@@ -28,5 +29,8 @@ async def test_update_by_id_with_id_missing(async_crud):
 @pytest.mark.asyncio
 @pytest.mark.order(9)
 async def test_update_by_id_with_incorrect_params(async_crud):
-    with pytest.raises(ValueError, match='Parameter year is not a valid column name'):
+    with pytest.raises(
+        ValueError,
+        match='Parameter year is not a valid column name'
+    ):
         await async_crud.update_by_id(name='test', age=21, year='year')

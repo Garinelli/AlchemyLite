@@ -11,6 +11,7 @@ user = Table(
     }
 ).model
 
+
 @pytest.fixture(scope='module')
 def session() -> AsyncPostgresConfig:
     config = AsyncPostgresConfig(

@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 
 from alchemylite import Table
 from alchemylite.sync import SyncCrud, SyncMySqlConfig
@@ -11,6 +11,7 @@ user = Table(
     }
 ).model
 
+
 @pytest.fixture(scope='module')
 def session() -> SyncMySqlConfig:
     config = SyncMySqlConfig(
@@ -21,11 +22,10 @@ def session() -> SyncMySqlConfig:
         db_name='test'
     )
 
-    return config 
+    return config
 
 
 @pytest.fixture
 def sync_crud(session) -> SyncCrud:
     crud = SyncCrud(session, user, user.base)
-    return crud 
-
+    return crud

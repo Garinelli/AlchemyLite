@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.asyncio
 @pytest.mark.order(1)
 async def test_create(async_crud):
@@ -16,5 +17,12 @@ async def test_create(async_crud):
 @pytest.mark.order(2)
 @pytest.mark.asyncio
 async def test_create_with_incorrect_params(async_crud):
-    with pytest.raises(ValueError, match='Parameter password is not a valid column name'):
-        await async_crud.create(name='test', email='<EMAIL>', password='<PASSWORD>')
+    with pytest.raises(
+        ValueError,
+        match='Parameter password is not a valid column name'
+    ):
+        await async_crud.create(
+            name='test',
+            email='<EMAIL>',
+            password='<PASSWORD>'
+        )

@@ -9,12 +9,15 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class Table:
     """
     A factory class for dynamically creating SQLAlchemy models.
 
-    This class allows you to dynamically generate SQLAlchemy models based on the provided
-    table name and field specifications. The fields should specify the column name, data type, and
+    This class allows you to dynamically generate
+    SQLAlchemy models based on the provided
+    table name and field specifications.
+    The fields should specify the column name, data type, and
     other column options such as 'nullable', 'default', 'unique', and 'index'.
     """
     _TYPE_MAP = {
@@ -27,7 +30,12 @@ class Table:
         "time": Time,
         "text": Text
     }
-    def __init__(self, table_name: str, fields: Dict[str, Dict[str, Any]]) -> None:
+
+    def __init__(
+        self,
+        table_name: str,
+        fields: Dict[str, Dict[str, Any]]
+    ) -> None:
         """
         Initializes a model factory for creating SQLAlchemy models dynamically.
 
@@ -58,7 +66,7 @@ class Table:
             column_type = self._TYPE_MAP.get(field_type)
             string_length = field_options.get('max_len', None)
             if field_type is str and string_length is not None:
-                if type(string_length) is not int:
+                if not isinstance(string_length, int):
                     raise ValueError("'max_len' must be an integer.")
                 if string_length <= 0:
                     raise ValueError("String length must be greater than 0")

@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.order(10)
 def test_delete_by_id(sync_crud):
     sync_crud.delete_by_id(id=1)

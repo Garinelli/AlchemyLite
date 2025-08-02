@@ -7,16 +7,24 @@ from sqlalchemy import select, update, delete
 from sqlalchemy.inspection import inspect
 
 from alchemylite.exceptions import BaseNotProvidedError, IncorrectConfig
-from alchemylite.async_ import AsyncPostgresConfig, AsyncSqliteConfig 
+from alchemylite.async_ import AsyncPostgresConfig, AsyncSqliteConfig
 from alchemylite import BaseConfig, BaseSQLiteConfig
+
 
 class AsyncCrud:
     """
     Class, which implements CRUD operations for async session
     """
-    def __init__(self, config: Union[AsyncPostgresConfig, AsyncSqliteConfig],
-                  model, base=None) -> None:
-        if not any((isinstance(config, BaseConfig), isinstance(config, BaseSQLiteConfig))):
+    def __init__(
+        self,
+        config: Union[AsyncPostgresConfig, AsyncSqliteConfig],
+        model,
+        base=None
+    ) -> None:
+        if not any(
+            (isinstance(config, BaseConfig),
+             isinstance(config, BaseSQLiteConfig))
+        ):
             raise IncorrectConfig
         self.async_session_factory = config.session
         self.model = model
@@ -28,7 +36,10 @@ class AsyncCrud:
         :param params: A dictionary with parameters for CRUD operation
         :return: True, if parameters are valid, else ValueError
         """
-        model_columns = {column.name: column.type for column in inspect(self.model).columns}
+        model_columns = {
+            column.name: column.type
+            for column in inspect(self.model).columns
+        }
         for key, _ in params.items():
             if key not in model_columns:
                 raise ValueError(f'Parameter {key} is not a valid column name')
@@ -88,10 +99,10 @@ class AsyncCrud:
         """
         self.__validate_params(kwargs)
         if 'id' not in kwargs:
-            raise ValueError(f'Parameter "id" is missing')
+            raise ValueError('Parameter "id" is missing')
         id = kwargs['id']
-        if type(id) is not int:
-            raise ValueError(f'Parameter "id" must be an integer')
+        if not isinstance(id, int):
+            raise ValueError('Parameter "id" must be an integer')
         async with self.async_session_factory() as session:
             stmt = update(self.model).where(self.model.id == id).values(kwargs)
             await session.execute(stmt)
@@ -104,10 +115,10 @@ class AsyncCrud:
         :return: None
         """
         if 'id' not in kwargs:
-            raise ValueError(f'Parameter "id" is missing')
+            raise ValueError('Parameter "id" is missing')
         id = kwargs['id']
-        if type(id) is not int:
-            raise ValueError(f'Parameter "id" must be an integer')
+        if not isinstance(id, int):
+            raise ValueError('Parameter "id" must be an integer')
         async with self.async_session_factory() as session:
             stmt = delete(self.model).where(self.model.id == id)
             await session.execute(stmt)

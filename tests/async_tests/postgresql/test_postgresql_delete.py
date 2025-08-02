@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.asyncio
 @pytest.mark.order(10)
 async def test_delete_by_id(async_crud):
@@ -12,7 +13,11 @@ async def test_delete_by_id(async_crud):
 @pytest.mark.order(11)
 async def test_delete_by_id_with_exception(async_crud):
     with pytest.raises(ValueError, match='Parameter "id" must be an integer'):
-        await async_crud.update_by_id(id='id', name='new_test', email='<EMAIL>')
+        await async_crud.update_by_id(
+            id='id',
+            name='new_test',
+            email='<EMAIL>'
+        )
 
 
 @pytest.mark.asyncio

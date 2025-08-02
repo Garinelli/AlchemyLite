@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import pytest 
+import pytest
 
 from alchemylite import Table
 from alchemylite.sync import SyncCrud, SyncSqliteConfig
@@ -21,7 +21,7 @@ model = Table(
 @pytest.fixture(scope="module")
 def session() -> SyncSqliteConfig:
     config = SyncSqliteConfig(db_path=DB_PATH)
-    return config     
+    return config
 
 
 @pytest.fixture(scope="module")

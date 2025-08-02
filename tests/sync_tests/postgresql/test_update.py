@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.order(6)
 def test_update_by_id(sync_crud):
     sync_crud.update_by_id(id=1, name='new_test', email='<EMAIL>')
@@ -24,5 +25,8 @@ def test_update_by_id_with_id_missing(sync_crud):
 
 @pytest.mark.order(9)
 def test_update_by_id_with_incorrect_params(sync_crud):
-    with pytest.raises(ValueError, match='Parameter year is not a valid column name'):
+    with pytest.raises(
+        ValueError,
+        match='Parameter year is not a valid column name'
+    ):
         sync_crud.update_by_id(name='test', email='<EMAIL>', year='year')

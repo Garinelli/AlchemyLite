@@ -2,6 +2,7 @@ import pytest
 
 from alchemylite.sync import SyncCrud
 
+
 @pytest.mark.order(10)
 def test_delete_by_id(sync_crud: SyncCrud) -> None:
     sync_crud.delete_by_id(id=1)

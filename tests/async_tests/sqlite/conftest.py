@@ -1,8 +1,8 @@
 from pathlib import Path
 
-import pytest 
+import pytest
 
-from alchemylite import Table 
+from alchemylite import Table
 from alchemylite.async_ import AsyncSqliteConfig, AsyncCrud
 
 DB_PATH = (Path(__file__).parent) / 'database.db'
@@ -16,13 +16,14 @@ model = Table(
     }
 ).model
 
+
 @pytest.fixture(scope='module')
 def session() -> AsyncSqliteConfig:
     config = AsyncSqliteConfig(db_path=DB_PATH)
-    return config 
+    return config
 
 
 @pytest.fixture(scope='module')
 def async_crud(session) -> AsyncCrud:
     crud = AsyncCrud(session, model, model.base)
-    return crud 
+    return crud

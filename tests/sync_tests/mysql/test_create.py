@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 
 
 @pytest.mark.order(1)
@@ -11,4 +11,3 @@ def test_create(sync_crud):
     assert result['id'] == 1
     assert result['name'] == 'test'
     assert result['email'] == '<EMAIL>'
-

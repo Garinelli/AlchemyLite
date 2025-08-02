@@ -10,13 +10,21 @@ from alchemylite.exceptions import BaseNotProvidedError, IncorrectConfig
 from alchemylite.sync import SyncPostgresConfig, SyncSqliteConfig
 from alchemylite import BaseConfig, BaseSQLiteConfig
 
+
 class SyncCrud:
     """
     Class, which implements CRUD operations for sync session
     """
-    def __init__(self, config: Union[SyncPostgresConfig, SyncSqliteConfig], 
-                 model, base=None) -> None:
-        if not any((isinstance(config, BaseConfig), isinstance(config, BaseSQLiteConfig))):
+    def __init__(
+        self,
+        config: Union[SyncPostgresConfig, SyncSqliteConfig],
+        model,
+        base=None
+    ) -> None:
+        if not any(
+        (isinstance(config, BaseConfig),
+         isinstance(config, BaseSQLiteConfig))
+        ):
             raise IncorrectConfig
         self.session_factory = config.session
         self.model = model
@@ -87,7 +95,7 @@ class SyncCrud:
         if 'id' not in kwargs:
             raise ValueError('Parameter "id" is missing')
         id = kwargs['id']
-        if type(id) is not int:
+        if not isinstance(id, int):
             raise ValueError('Parameter "id" must be an integer')
 
         with self.session_factory() as session:
@@ -104,7 +112,7 @@ class SyncCrud:
         if 'id' not in kwargs:
             raise ValueError('Parameter "id" is missing')
         id = kwargs['id']
-        if type(id) is not int:
+        if not isinstance(id, int):
             raise ValueError('Parameter "id" must be an integer')
 
         with self.session_factory() as session:

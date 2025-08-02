@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class BaseConfig(ABC):
     """
     Abstract base class for database configuration.

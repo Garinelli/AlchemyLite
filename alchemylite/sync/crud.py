@@ -2,6 +2,7 @@
 CRUD Operations for sync session
 """
 from typing import Any, Union
+from abc import ABC, abstractmethod
 
 from sqlalchemy import select, update, delete
 from sqlalchemy.inspection import inspect
@@ -11,10 +12,45 @@ from alchemylite.sync import SyncPostgresConfig, SyncSqliteConfig
 from alchemylite import BaseConfig, BaseSQLiteConfig
 
 
-class SyncCrud:
+class AbstractSyncCrud(ABC):
+    @abstractmethod
+    def create(self, **kwargs) -> None:
+        pass
+
+    @abstractmethod
+    def read_all(self) -> list[dict]:
+        pass
+
+    @abstractmethod
+    def limited_read(self, limit: int = 50, offset: int = 0) -> list[dict]:
+        pass
+
+    @abstractmethod
+    def read_by_id(self, id: int) -> list[dict]:
+        pass
+
+    @abstractmethod
+    def update_by_id(self, **kwargs) -> None:
+        pass
+
+    @abstractmethod
+    def delete_by_id(self, **kwargs) -> None:
+        pass
+
+    @abstractmethod
+    def delete_table(self) -> None:
+        pass
+
+    @abstractmethod
+    def create_table(self) -> None:
+        pass
+
+
+class SyncCrud(AbstractSyncCrud):
     """
     Class, which implements CRUD operations for sync session
     """
+
     def __init__(
         self,
         config: Union[SyncPostgresConfig, SyncSqliteConfig],
@@ -22,8 +58,8 @@ class SyncCrud:
         base=None
     ) -> None:
         if not any(
-        (isinstance(config, BaseConfig),
-         isinstance(config, BaseSQLiteConfig))
+            (isinstance(config, BaseConfig),
+             isinstance(config, BaseSQLiteConfig))
         ):
             raise IncorrectConfig
         self.session_factory = config.session
@@ -44,8 +80,6 @@ class SyncCrud:
     def create(self, **kwargs) -> None:
         """
         Create operation
-        :param params: A dict with parameters and values
-        :return: None
         """
         self.__validate_params(kwargs)
         with self.session_factory() as session:
@@ -87,9 +121,6 @@ class SyncCrud:
     def update_by_id(self, **kwargs) -> None:
         """
         Update operation
-        :param condition: A dict with condition
-        :param params: Params for update
-        :return: None
         """
         self.__validate_params(kwargs)
         if 'id' not in kwargs:
@@ -105,9 +136,7 @@ class SyncCrud:
 
     def delete_by_id(self, **kwargs) -> None:
         """
-        Delete operation
-        :param condition: A dict with condition
-        :return: None
+        Delete operationp
         """
         if 'id' not in kwargs:
             raise ValueError('Parameter "id" is missing')

@@ -1,16 +1,26 @@
 from typing import Any, Dict, Type
+from abc import ABC, abstractmethod
 
-from sqlalchemy import (Integer, String, Boolean,
-                        Float, Column, Date,
-                        DateTime, Time, Text,
-                        ForeignKey)
+from sqlalchemy import (
+    Integer, String, Boolean,
+    Float, Column, Date,
+    DateTime, Time, Text,
+    ForeignKey
+)
 
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
 
-class Table:
+class AbstractTable(ABC):
+    @abstractmethod
+    @property
+    def model(self) -> Type[Base]:
+        pass
+
+
+class Table(AbstractTable):
     """
     A factory class for dynamically creating SQLAlchemy models.
 
@@ -39,13 +49,20 @@ class Table:
         """
         Initializes a model factory for creating SQLAlchemy models dynamically.
 
-        :param name: Name of the table.
+        :param table_name: Name of the table.
         :param fields: A dictionary where the key is the column name, and the value is a dictionary of
                        column options, including 'type' (data type), 'null' (nullable),
                        'default', 'unique', and 'index'.
         """
         self.table_name = table_name
         self.fields = fields
+
+    @staticmethod
+    def _validate_string_len(string_len: int) -> None:
+        if not isinstance(string_len, int):
+            raise ValueError("'max_len' must be an integer.")
+        if string_len <= 0:
+            raise ValueError("'max_len' must be greater than 0")
 
     @property
     def model(self) -> Type[Base]:
@@ -66,10 +83,7 @@ class Table:
             column_type = self._TYPE_MAP.get(field_type)
             string_length = field_options.get('max_len', None)
             if field_type is str and string_length is not None:
-                if not isinstance(string_length, int):
-                    raise ValueError("'max_len' must be an integer.")
-                if string_length <= 0:
-                    raise ValueError("String length must be greater than 0")
+                self._validate_string_len(string_length)
                 column_type = column_type(string_length)
 
             if not column_type:
@@ -91,11 +105,13 @@ class Table:
             else:
                 column_type = [column_type]
             # Create column with specified options
-            attrs[field_name] = Column(*column_type,
-                                       nullable=nullable,
-                                       default=default,
-                                       unique=unique,
-                                       index=index)
+            attrs[field_name] = Column(
+                *column_type,
+                nullable=nullable,
+                default=default,
+                unique=unique,
+                index=index
+            )
 
         # Dynamically create the model class
         model_class = type(self.table_name, (Base,), attrs)

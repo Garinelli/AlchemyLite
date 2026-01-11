@@ -13,9 +13,24 @@ class AsyncPostgresConfig(BaseConfig):
     """
     Class for configuring PostgreSQL async sessions
     """
+
+    def __init__(
+        self,
+        db_host: str,
+        db_port: str,
+        db_user: str,
+        db_pass: str,
+        db_name: str
+    ) -> None:
+        self._db_host = db_host
+        self._db_port = db_port
+        self._db_user = db_user
+        self._db_pass = db_pass
+        self._db_name = db_name
+
     @property
     def DATABASE_URL(self) -> str:
-        return f'postgresql+asyncpg://{self.db_user}:{self.db_pass}@{self.db_host}:{self.db_port}/{self.db_name}'  # noqa: E501
+        return f'postgresql+asyncpg://{self._db_user}:{self._db_pass}@{self._db_host}:{self._db_port}/{self._db_name}'  # noqa: E501
 
     @property
     def session(self) -> async_sessionmaker:
@@ -33,6 +48,10 @@ class AsyncSqliteConfig(BaseSQLiteConfig):
     """
     Class for configuring SQLite async sessions
     """
+
+    def __init__(self, db_path: str) -> None:
+        self._db_path = db_path
+
     @property
     def DATABASE_URL(self) -> str:
         return f'sqlite+aiosqlite:///{self._db_path}'

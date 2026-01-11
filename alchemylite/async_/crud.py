@@ -2,6 +2,7 @@
 CRUD Operations for async session
 """
 from typing import Any, Union
+from abc import ABC, abstractmethod
 
 from sqlalchemy import select, update, delete
 from sqlalchemy.inspection import inspect
@@ -11,10 +12,45 @@ from alchemylite.async_ import AsyncPostgresConfig, AsyncSqliteConfig
 from alchemylite import BaseConfig, BaseSQLiteConfig
 
 
-class AsyncCrud:
+class AbstractAsyncCrud(ABC):
+    @abstractmethod
+    async def create(self, **kwargs) -> None:
+        pass
+
+    @abstractmethod
+    async def read_all(self) -> list[dict]:
+        pass
+
+    @abstractmethod
+    async def limited_read(self, limit: int = 50, offset: int = 0) -> list[dict]:
+        pass
+
+    @abstractmethod
+    async def read_by_id(self, id: int) -> list[dict]:
+        pass
+
+    @abstractmethod
+    async def update_by_id(self, **kwargs) -> None:
+        pass
+
+    @abstractmethod
+    async def delete_by_id(self, **kwargs) -> None:
+        pass
+
+    @abstractmethod
+    async def delete_table(self) -> None:
+        pass
+
+    @abstractmethod
+    async def create_table(self) -> None:
+        pass
+
+
+class AsyncCrud(AbstractAsyncCrud):
     """
     Class, which implements CRUD operations for async session
     """
+
     def __init__(
         self,
         config: Union[AsyncPostgresConfig, AsyncSqliteConfig],
@@ -47,8 +83,6 @@ class AsyncCrud:
     async def create(self, **kwargs) -> None:
         """
         Create operation
-        :param params: A dict with parameters and values
-        :return: None
         """
         self.__validate_params(kwargs)
         async with self.async_session_factory() as session:
@@ -93,9 +127,6 @@ class AsyncCrud:
     async def update_by_id(self, **kwargs) -> None:
         """
         Update operation
-        :param condition: A dict with condition
-        :param params: Params for update
-        :return: None
         """
         self.__validate_params(kwargs)
         if 'id' not in kwargs:
@@ -111,8 +142,6 @@ class AsyncCrud:
     async def delete_by_id(self, **kwargs) -> None:
         """
         Delete operation
-        :param condition: A dict with condition
-        :return: None
         """
         if 'id' not in kwargs:
             raise ValueError('Parameter "id" is missing')
